@@ -1,0 +1,64 @@
+import Link from "next/link";
+import { siteConfig } from "@/config/site";
+
+export function FloatingButtons() {
+  return (
+    <div className="fixed right-5 bottom-[22px] z-[60] flex flex-col gap-[11px]">
+      {/* 전화 */}
+      <Link
+        href={`tel:${siteConfig.phone}`}
+        title="전화 상담"
+        className="w-[54px] h-[54px] rounded-full grid place-items-center bg-gold text-[#1a1305] shadow-[0_8px_22px_rgba(0,0,0,0.45)] transition-transform duration-150 hover:scale-[1.08]"
+      >
+        <svg viewBox="0 0 24 24" width="22" fill="currentColor">
+          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2z" />
+        </svg>
+      </Link>
+
+      {/* 카카오 */}
+      <Link
+        href={siteConfig.kakaoOpenUrl}
+        title="카카오 상담"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-[54px] h-[54px] rounded-full grid place-items-center bg-[#FAE100] text-[#3a1d1d] shadow-[0_8px_22px_rgba(0,0,0,0.45)] transition-transform duration-150 hover:scale-[1.08]"
+      >
+        <svg viewBox="0 0 24 24" width="22" fill="currentColor">
+          <path d="M12 3C6.5 3 2 6.5 2 10.8c0 2.7 1.8 5.1 4.6 6.5l-1 3.6 4-2.6c.8.1 1.6.2 2.4.2 5.5 0 10-3.5 10-7.9S17.5 3 12 3z" />
+        </svg>
+      </Link>
+
+      {/* 인스타그램 */}
+      <Link
+        href={siteConfig.instagramUrl}
+        title="인스타그램"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-[54px] h-[54px] rounded-full grid place-items-center text-white shadow-[0_8px_22px_rgba(0,0,0,0.45)] transition-transform duration-150 hover:scale-[1.08] [background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)]"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="22"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      </Link>
+
+      {/* 문자 */}
+      <Link
+        href={`sms:${siteConfig.sms}`}
+        title="문자 상담"
+        className="w-[54px] h-[54px] rounded-full grid place-items-center bg-[#2f6be6] text-white shadow-[0_8px_22px_rgba(0,0,0,0.45)] transition-transform duration-150 hover:scale-[1.08]"
+      >
+        <svg viewBox="0 0 24 24" width="22" fill="currentColor">
+          <path d="M4 4h16c1 0 2 .9 2 2v10c0 1-1 2-2 2H8l-4 4V6c0-1 1-2 2-2z" />
+        </svg>
+      </Link>
+    </div>
+  );
+}
