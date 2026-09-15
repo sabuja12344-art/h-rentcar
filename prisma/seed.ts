@@ -1,0 +1,120 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+async function main() {
+  await prisma.car.deleteMany();
+
+  await prisma.car.createMany({
+    data: [
+      {
+        name: "그랜저",
+        nameEn: "Grandeur",
+        category: "세단",
+        brand: "현대",
+        monthlyPrice: 43,
+        year: "2024년형",
+        fuel: "가솔린",
+        seats: 5,
+        mileage: "2만km/년",
+        contractTerms: "24/36/48개월",
+        label: "인기",
+        sortOrder: 1,
+        description: "국내 최고 인기 대형 세단. 넓은 실내 공간과 편안한 승차감으로 장기 렌트에 최적화된 차량입니다.",
+        options: "스마트 크루즈 컨트롤, 후방 모니터, 통풍시트, 파노라마 선루프",
+        deposit: "없음",
+      },
+      {
+        name: "싼타페",
+        nameEn: "Santa Fe",
+        category: "SUV",
+        brand: "현대",
+        monthlyPrice: 55,
+        year: "2024년형",
+        fuel: "디젤",
+        seats: 5,
+        mileage: "2만km/년",
+        contractTerms: "24/36/48개월",
+        label: null,
+        sortOrder: 2,
+        description: "패밀리 SUV의 대표 모델. 넓은 공간과 뛰어난 주행 안정성으로 가족 이동에 최적입니다.",
+        options: "7인치 클러스터, 스마트 크루즈, 전방 충돌방지, 차로유지 보조",
+        deposit: "없음",
+      },
+      {
+        name: "카니발",
+        nameEn: "Carnival",
+        category: "승합·미니밴",
+        brand: "기아",
+        monthlyPrice: 43,
+        year: "2024년형",
+        fuel: "디젤",
+        seats: 9,
+        mileage: "2만km/년",
+        contractTerms: "24/36/48개월",
+        label: "인기",
+        sortOrder: 3,
+        description: "9인승 미니밴의 압도적 강자. 대가족 또는 단체 이동 시 최고의 선택입니다.",
+        options: "파워슬라이딩도어, 후방모니터, 2열 독립시트, 스마트키",
+        deposit: "없음",
+      },
+      {
+        name: "쏘나타",
+        nameEn: "Sonata",
+        category: "세단",
+        brand: "현대",
+        monthlyPrice: 36,
+        year: "2024년형",
+        fuel: "가솔린",
+        seats: 5,
+        mileage: "2만km/년",
+        contractTerms: "12/24/36개월",
+        label: "특가",
+        sortOrder: 4,
+        description: "합리적인 가격대의 준대형 세단. 경제성과 실용성을 동시에 갖춘 장기렌트 최적 모델입니다.",
+        options: "후방 모니터, 스마트 크루즈 컨트롤, 차로유지 보조",
+        deposit: "없음",
+      },
+      {
+        name: "아이오닉6",
+        nameEn: "IONIQ 6",
+        category: "전기·친환경",
+        brand: "현대",
+        monthlyPrice: 58,
+        year: "2024년형",
+        fuel: "전기",
+        seats: 5,
+        mileage: "2만km/년",
+        contractTerms: "24/36/48개월",
+        label: "신차",
+        sortOrder: 5,
+        description: "1회 충전 600km 이상의 국내 최고 전기 세단. 유지비 절감과 친환경을 동시에.",
+        options: "V2L 기능, 고속충전(800V), 디지털 사이드미러, HUD",
+        deposit: "없음",
+      },
+      {
+        name: "스파크",
+        nameEn: "Spark",
+        category: "경차",
+        brand: "쉐보레",
+        monthlyPrice: 22,
+        year: "2023년형",
+        fuel: "가솔린",
+        seats: 4,
+        mileage: "2만km/년",
+        contractTerms: "12/24/36개월",
+        label: "즉시출고",
+        sortOrder: 6,
+        description: "도심 주행에 최적화된 경차. 낮은 초기비용과 높은 연비로 부담 없이 시작하세요.",
+        options: "후방 카메라, 블루투스 오디오, USB 충전포트",
+        deposit: "없음",
+      },
+    ],
+  });
+
+  console.log("✅ 시드 완료: 차량 6종");
+}
+
+main()
+  .catch(console.error)
+  .finally(() => prisma.$disconnect());
