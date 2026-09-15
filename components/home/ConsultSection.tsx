@@ -1,7 +1,5 @@
 import { siteConfig } from "@/config/site";
-
-const inputClass =
-  "w-full px-[14px] py-[13px] rounded-[10px] text-[14px] bg-[rgba(255,255,255,0.04)] border border-[var(--line-strong)] text-ink placeholder:text-ink-dim transition-colors duration-150 focus:outline-none focus:border-gold";
+import { ConsultForm } from "./ConsultForm";
 
 export function ConsultSection() {
   return (
@@ -56,66 +54,7 @@ export function ConsultSection() {
             </div>
 
             {/* 폼 */}
-            <div className="bg-[rgba(7,11,19,0.5)] border border-[var(--line)] rounded-[16px] p-6">
-              {/* Step 4에서 서버 액션 연결 예정 */}
-              <form>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                  <div>
-                    <label className="block text-[12px] text-ink-soft mb-[6px] font-semibold">
-                      이름
-                    </label>
-                    <input type="text" placeholder="홍길동" className={inputClass} />
-                  </div>
-                  <div>
-                    <label className="block text-[12px] text-ink-soft mb-[6px] font-semibold">
-                      연락처
-                    </label>
-                    <input type="tel" placeholder="010-0000-0000" className={inputClass} />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                  <div>
-                    <label className="block text-[12px] text-ink-soft mb-[6px] font-semibold">
-                      희망 차종
-                    </label>
-                    <input type="text" placeholder="예: 그랜저" className={inputClass} />
-                  </div>
-                  <div>
-                    <label className="block text-[12px] text-ink-soft mb-[6px] font-semibold">
-                      문의 유형
-                    </label>
-                    <select
-                      className={inputClass}
-                      style={{ colorScheme: "dark" }}
-                    >
-                      <option value="new">신규 상담</option>
-                      <option value="quote">견적 요청</option>
-                      <option value="other">기타 문의</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="mb-1">
-                  <label className="block text-[12px] text-ink-soft mb-[6px] font-semibold">
-                    문의 내용
-                  </label>
-                  <textarea
-                    placeholder="희망 계약기간, 예산 등을 남겨주세요."
-                    rows={3}
-                    className={`${inputClass} resize-y min-h-[74px]`}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full py-[15px] rounded-[11px] border-0 cursor-pointer text-[15px] font-black text-[#1a1305] bg-gradient-to-br from-gold-soft to-gold mt-1 transition-all duration-200 hover:brightness-105 hover:-translate-y-px"
-                >
-                  상담 신청하기
-                </button>
-                <label className="flex gap-[7px] items-start text-[12px] text-ink-dim mt-3 cursor-pointer">
-                  <input type="checkbox" className="mt-[2px] shrink-0" />
-                  개인정보 수집 및 이용에 동의합니다.
-                </label>
-              </form>
-            </div>
+            <ConsultForm />
           </div>
         </div>
       </div>
