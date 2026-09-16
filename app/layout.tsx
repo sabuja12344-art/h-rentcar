@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { FloatingButtons } from "@/components/layout/FloatingButtons";
+import { SiteShell } from "@/components/layout/SiteShell";
 
 export const metadata: Metadata = {
   title: "H-RENT CAR | 광주 월 장기렌트",
@@ -21,10 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-bg-deep text-ink">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <FloatingButtons />
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );
