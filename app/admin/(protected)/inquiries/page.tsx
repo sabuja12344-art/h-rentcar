@@ -10,6 +10,16 @@ const STATUS_FLOW: Record<string, { label: string; next: string; nextLabel: stri
   DONE: { label: "완료", next: "NEW", nextLabel: "→ 재개", color: "bg-[rgba(255,255,255,0.06)] text-ink-dim" },
 };
 
+function DateTimeCell({ date, time }: { date?: string | null; time?: string | null }) {
+  if (!date) return <span className="text-ink-dim">—</span>;
+  return (
+    <span>
+      {date}
+      {time && <span className="ml-1 text-ink-dim">{time}</span>}
+    </span>
+  );
+}
+
 export default async function AdminInquiriesPage() {
   const inquiries = await prisma.inquiry.findMany({
     orderBy: { createdAt: "desc" },
@@ -31,11 +41,11 @@ export default async function AdminInquiriesPage() {
         </div>
       </div>
 
-      <div className="bg-panel border border-[var(--line)] rounded-[14px] overflow-hidden">
-        <table className="w-full">
+      <div className="bg-panel border border-[var(--line)] rounded-[14px] overflow-x-auto">
+        <table className="w-full min-w-[860px]">
           <thead>
             <tr className="border-b border-[var(--line)]">
-              {["일시", "이름", "연락처", "희망 차종", "유형", "문의 내용", "상태"].map((h) => (
+              {["접수일시", "이름", "연락처", "희망 차종", "배차 일시", "반납 일시", "문의 내용", "상태"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-ink-dim font-semibold uppercase tracking-wide py-3 px-4 whitespace-nowrap">
                   {h}
                 </th>
@@ -45,7 +55,7 @@ export default async function AdminInquiriesPage() {
           <tbody>
             {inquiries.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-ink-dim text-[13px]">
+                <td colSpan={8} className="py-12 text-center text-ink-dim text-[13px]">
                   접수된 상담이 없습니다.
                 </td>
               </tr>
@@ -69,8 +79,13 @@ export default async function AdminInquiriesPage() {
                     </a>
                   </td>
                   <td className="py-3 px-4 text-[13px] text-ink-soft">{inq.carInterest || "—"}</td>
-                  <td className="py-3 px-4 text-[12px] text-ink-soft">{inq.type || "—"}</td>
-                  <td className="py-3 px-4 text-[12px] text-ink-soft max-w-[200px] truncate" title={inq.message ?? ""}>
+                  <td className="py-3 px-4 text-[12px] text-ink-soft whitespace-nowrap">
+                    <DateTimeCell date={inq.pickupDate} time={inq.pickupTime} />
+                  </td>
+                  <td className="py-3 px-4 text-[12px] text-ink-soft whitespace-nowrap">
+                    <DateTimeCell date={inq.returnDate} time={inq.returnTime} />
+                  </td>
+                  <td className="py-3 px-4 text-[12px] text-ink-soft max-w-[180px] truncate" title={inq.message ?? ""}>
                     {inq.message || "—"}
                   </td>
                   <td className="py-3 px-4">

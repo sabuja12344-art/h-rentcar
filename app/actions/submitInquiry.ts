@@ -11,19 +11,20 @@ const schema = z.object({
     .min(9, "연락처를 입력해주세요")
     .regex(/^[\d\-\s]+$/, "올바른 연락처를 입력해주세요"),
   carInterest: z.string().optional(),
-  type: z.enum(["신규", "견적", "기타"], {
-    errorMap: () => ({ message: "문의 유형을 선택해주세요" }),
-  }),
   message: z.string().optional(),
   agreedPrivacy: z.enum(["on"], {
     errorMap: () => ({ message: "개인정보 수집 및 이용에 동의해주세요" }),
   }),
+  pickupDate: z.string().optional(),
+  pickupTime: z.string().optional(),
+  returnDate: z.string().optional(),
+  returnTime: z.string().optional(),
 });
 
 export type InquiryState = {
   success?: boolean;
   error?: string;
-  fieldErrors?: Partial<Record<keyof z.infer<typeof schema>, string>>;
+  fieldErrors?: Partial<Record<"name" | "phone" | "agreedPrivacy", string>>;
 };
 
 export async function submitInquiry(
@@ -33,10 +34,13 @@ export async function submitInquiry(
   const raw = {
     name: formData.get("name"),
     phone: formData.get("phone"),
-    carInterest: formData.get("carInterest"),
-    type: formData.get("type"),
-    message: formData.get("message"),
+    carInterest: formData.get("carInterest") || undefined,
+    message: formData.get("message") || undefined,
     agreedPrivacy: formData.get("agreedPrivacy"),
+    pickupDate: formData.get("pickupDate") || undefined,
+    pickupTime: formData.get("pickupTime") || undefined,
+    returnDate: formData.get("returnDate") || undefined,
+    returnTime: formData.get("returnTime") || undefined,
   };
 
   const result = schema.safeParse(raw);
@@ -51,7 +55,8 @@ export async function submitInquiry(
     };
   }
 
-  const { name, phone, carInterest, type, message } = result.data;
+  const { name, phone, carInterest, message, pickupDate, pickupTime, returnDate, returnTime } =
+    result.data;
 
   try {
     await prisma.inquiry.create({
@@ -59,13 +64,16 @@ export async function submitInquiry(
         name,
         phone,
         carInterest: carInterest || null,
-        type,
         message: message || null,
         agreedPrivacy: true,
+        pickupDate: pickupDate || null,
+        pickupTime: pickupTime || null,
+        returnDate: returnDate || null,
+        returnTime: returnTime || null,
       },
     });
 
-    await sendInquiryEmail({ name, phone, carInterest, type, message });
+    await sendInquiryEmail({ name, phone, carInterest, message, pickupDate, pickupTime, returnDate, returnTime });
 
     return { success: true };
   } catch (err) {

@@ -5,16 +5,15 @@ import type { Metadata } from "next";
 export const metadata: Metadata = { title: "대시보드 | 어드민" };
 
 export default async function AdminDashboard() {
-  const [totalCars, activeCars, totalInquiries, newInquiries, recentInquiries] =
+  const [totalCars, activeCars, totalInquiries, newInquiries, totalBanners, totalReviews, recentInquiries] =
     await Promise.all([
       prisma.car.count(),
       prisma.car.count({ where: { isActive: true } }),
       prisma.inquiry.count(),
       prisma.inquiry.count({ where: { status: "NEW" } }),
-      prisma.inquiry.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 5,
-      }),
+      prisma.banner.count({ where: { isActive: true } }),
+      prisma.review.count({ where: { isActive: true } }),
+      prisma.inquiry.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
     ]);
 
   const stats = [
@@ -28,6 +27,8 @@ export default async function AdminDashboard() {
       color: newInquiries > 0 ? "text-gold" : "text-ink-dim",
       highlight: newInquiries > 0,
     },
+    { label: "활성 배너", value: totalBanners, href: "/admin/banners", color: "text-cyan" },
+    { label: "활성 후기", value: totalReviews, href: "/admin/reviews", color: "text-blue-400" },
   ];
 
   const statusLabel: Record<string, string> = {
@@ -45,11 +46,11 @@ export default async function AdminDashboard() {
     <div>
       <div className="mb-8">
         <h1 className="text-[22px] font-black">대시보드</h1>
-        <p className="text-ink-dim text-[13px] mt-1">H-RENT CAR 관리 현황</p>
+        <p className="text-ink-dim text-[13px] mt-1">현대렌트카 관리 현황</p>
       </div>
 
       {/* 통계 카드 */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
         {stats.map((s) => (
           <Link
             key={s.label}
@@ -83,7 +84,7 @@ export default async function AdminDashboard() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-[var(--line)]">
-                  {["이름", "연락처", "희망 차종", "유형", "상태", "일시"].map((h) => (
+                  {["이름", "연락처", "희망 차종", "상태", "일시"].map((h) => (
                     <th key={h} className="text-left text-[11px] text-ink-dim font-semibold uppercase py-3 px-4">
                       {h}
                     </th>
@@ -96,7 +97,6 @@ export default async function AdminDashboard() {
                     <td className="py-3 px-4 text-[13px] font-medium">{inq.name}</td>
                     <td className="py-3 px-4 text-[13px] text-ink-soft">{inq.phone}</td>
                     <td className="py-3 px-4 text-[13px] text-ink-soft">{inq.carInterest || "—"}</td>
-                    <td className="py-3 px-4 text-[13px] text-ink-soft">{inq.type || "—"}</td>
                     <td className="py-3 px-4">
                       <span className={`text-[11px] font-semibold px-[10px] py-[4px] rounded-full ${statusColor[inq.status] ?? ""}`}>
                         {statusLabel[inq.status] ?? inq.status}

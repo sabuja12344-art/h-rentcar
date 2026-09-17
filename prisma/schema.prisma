@@ -39,5 +39,33 @@ model Inquiry {
   message       String?
   status        String   @default("NEW")
   agreedPrivacy Boolean
+  pickupDate    String?
+  returnDate    String?
+  pickupTime    String?
+  returnTime    String?
   createdAt     DateTime @default(now())
+}
+
+model Banner {
+  id         String   @id @default(cuid())
+  chipLabel  String
+  chipPrice  String
+  caption    String?
+  carType    String   @default("sedan")
+  glow       String   @default("rgba(61,139,255,.28)")
+  isActive   Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  stars     Int      @default(5)
+  text      String
+  name      String
+  detail    String?
+  initial   String
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
 }

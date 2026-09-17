@@ -7,6 +7,8 @@ const navItems = [
   { href: "/admin", label: "대시보드", exact: true },
   { href: "/admin/cars", label: "차량 관리", exact: false },
   { href: "/admin/inquiries", label: "상담 목록", exact: false },
+  { href: "/admin/banners", label: "배너 관리", exact: false },
+  { href: "/admin/reviews", label: "후기 관리", exact: false },
 ];
 
 export function AdminNav() {
