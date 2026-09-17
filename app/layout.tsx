@@ -3,9 +3,22 @@ import "./globals.css";
 import { SiteShell } from "@/components/layout/SiteShell";
 
 export const metadata: Metadata = {
-  title: "H-RENT CAR | 광주 월 장기렌트",
+  title: {
+    default: "H-RENT CAR | 광주 월 장기렌트",
+    template: "%s | H-RENT CAR",
+  },
   description:
-    "광주 지역 최적화 월 장기렌트 — H-RENT CAR에서 합리적인 가격으로 원하는 차량을 만나보세요.",
+    "광주·전남 월 장기렌트 전문 H-RENT CAR. 세단·SUV·전기차·승합 120여 종, 보험·정비 포함, 초기비용 없이 월 43만원부터 시작.",
+  keywords: ["광주 장기렌트", "광주 월렌트", "장기렌트", "H-RENT CAR", "광주 렌트카"],
+  openGraph: {
+    title: "H-RENT CAR | 광주 월 장기렌트",
+    description: "광주·전남 월 장기렌트 전문. 보험·정비 포함, 월 43만원부터 시작.",
+    url: "https://h-rentcar.kr",
+    siteName: "H-RENT CAR",
+    locale: "ko_KR",
+    type: "website",
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

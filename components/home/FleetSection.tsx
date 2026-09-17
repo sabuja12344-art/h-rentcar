@@ -10,26 +10,30 @@ export async function FleetSection() {
   });
 
   return (
-    <section id="fleet" className="py-[60px] sm:py-[88px]">
-      <div className="mx-auto max-w-[1200px] px-6 sm:px-8">
-        <div className="flex items-end justify-between gap-5 mb-[42px] flex-wrap">
+    <section id="fleet" className="section-py border-t border-[var(--line)]">
+      <div className="wrap">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-[38px]">
           <div>
-            <h2 className="text-[clamp(26px,3.4vw,38px)] font-black tracking-[-0.02em]">
-              인기 차량 맞춤 견적
+            <div className="text-[12.5px] font-bold text-cyan tracking-[.14em] uppercase mb-[10px]">
+              Popular
+            </div>
+            <h2 className="text-[clamp(24px,3.1vw,34px)] font-black tracking-[-0.02em]">
+              맞춤 견적 차량 추천
             </h2>
-            <p className="text-ink-soft text-[15px] mt-2">
-              가장 문의가 많은 차량입니다. 전 차종은 차량안내에서 확인하세요.
+            <p className="text-ink-soft text-[15px] mt-[10px]">
+              가장 많이 문의하는 차량입니다. 전 차종은 차량안내에서 확인하세요.
             </p>
           </div>
           <Link
             href="/fleet"
-            className="text-[14px] text-gold-soft font-semibold inline-flex items-center gap-[6px] shrink-0"
+            className="text-[14px] text-blue-bright font-semibold whitespace-nowrap shrink-0 hover:underline"
           >
             전체 차량 보기 →
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[22px]">
-          {cars.map((car) => (
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[22px]">
+          {cars.map(car => (
             <CarCard key={car.id} car={car} />
           ))}
         </div>
