@@ -48,24 +48,24 @@ export function CategorySection() {
   return (
     <section id="solutions" className="section-py border-t border-[var(--line)]">
       <div className="wrap">
-        <div className="text-center mb-[38px]">
-          <div className="text-[12.5px] font-bold text-cyan tracking-[.14em] uppercase mb-[10px]">
+        <div className="text-center sec-header">
+          <div className="text-[13px] font-bold text-blue tracking-[.14em] uppercase mb-3">
             Why H-RENT CAR
           </div>
-          <h2 className="text-[clamp(24px,3.1vw,34px)] font-black tracking-[-0.02em]">
+          <h2 className="sec-h2">
             광주에서 장기렌트, 이래서 H-RENT CAR입니다
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[18px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {benefits.map((b, i) => (
-            <div key={i} className="glass rounded-[18px] p-[28px_24px]">
-              <div className="w-[46px] h-[46px] rounded-[12px] bg-[rgba(87,214,240,.14)] text-cyan grid place-items-center mb-[18px]">
+            <div key={i} className="glass rounded-[18px]" style={{ padding: "30px 26px" }}>
+              <div className="w-[50px] h-[50px] rounded-[13px] text-green grid place-items-center mb-5" style={{ background: "rgba(18,178,106,.1)" }}>
                 {b.icon}
               </div>
-              <div className="text-[12px] text-cyan font-semibold">{b.tag}</div>
-              <h3 className="text-[18px] font-black mt-[6px]">{b.title}</h3>
-              <p className="text-[13.5px] text-ink-dim mt-[10px] leading-[1.7]">{b.desc}</p>
+              <div className="text-[12.5px] text-green font-semibold">{b.tag}</div>
+              <h3 className="text-[19px] font-black mt-2">{b.title}</h3>
+              <p className="text-[14px] text-ink-dim mt-3 leading-[1.75]">{b.desc}</p>
             </div>
           ))}
         </div>

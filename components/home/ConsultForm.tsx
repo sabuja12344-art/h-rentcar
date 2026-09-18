@@ -5,7 +5,7 @@ import { useFormStatus } from "react-dom";
 import { submitInquiry, type InquiryState } from "@/app/actions/submitInquiry";
 
 const inputClass =
-  "w-full px-[14px] py-[13px] rounded-[10px] text-[14px] bg-[rgba(255,255,255,.05)] border border-[var(--line-strong)] text-ink placeholder:text-ink-dim transition-colors duration-150 focus:outline-none focus:border-blue-bright";
+  "w-full px-[14px] py-[13px] rounded-[10px] text-[14px] bg-white border border-[var(--line-strong)] text-ink placeholder:text-ink-dim transition-colors duration-150 focus:outline-none focus:border-blue-bright";
 
 function FieldError({ msg }: { msg?: string }) {
   if (!msg) return null;
@@ -20,8 +20,8 @@ function SubmitButton() {
       disabled={pending}
       className="w-full py-[15px] rounded-[11px] border-0 cursor-pointer text-[15px] font-black text-white mt-1 transition-all duration-150 hover:brightness-105 hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
       style={{
-        background: "linear-gradient(135deg,#5ea6ff,#3d8bff)",
-        boxShadow: "0 8px 22px rgba(61,139,255,.4)",
+        background: "linear-gradient(135deg,#4f86f0,#2f6be6)",
+        boxShadow: "0 8px 22px rgba(47,107,230,.3)",
       }}
     >
       {pending ? "전송 중..." : "상담 신청하기"}
@@ -37,10 +37,10 @@ export function ConsultForm() {
   if (state.success) {
     return (
       <div
-        className="rounded-[16px] p-6 flex flex-col items-center justify-center gap-4 min-h-[320px] text-center border border-[var(--glass-line)]"
-        style={{ background: "rgba(6,11,22,.35)", backdropFilter: "blur(8px)" }}
+        className="rounded-[16px] p-6 flex flex-col items-center justify-center gap-4 min-h-[320px] text-center border border-[var(--line)]"
+        style={{ background: "#f4f6fa" }}
       >
-        <div className="w-16 h-16 rounded-full grid place-items-center text-cyan" style={{ background: "rgba(87,214,240,.14)" }}>
+        <div className="w-16 h-16 rounded-full grid place-items-center text-green" style={{ background: "rgba(18,178,106,.1)" }}>
           <svg viewBox="0 0 24 24" width="30" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12" />
           </svg>
@@ -64,27 +64,27 @@ export function ConsultForm() {
 
   return (
     <div
-      className="rounded-[16px] p-6 border border-[var(--glass-line)]"
-      style={{ background: "rgba(6,11,22,.35)", backdropFilter: "blur(8px)" }}
+      className="rounded-[16px] p-6 border border-[var(--line)]"
+      style={{ background: "#f4f6fa" }}
     >
       {state.error && (
         <div className="mb-4 px-4 py-3 rounded-[10px] bg-red-500/10 border border-red-500/30 text-red-400 text-[13px]">
           {state.error}
         </div>
       )}
-      <form action={action} className="space-y-3">
+      <form action={action} className="space-y-[13px]">
         {/* 이름 / 연락처 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-[12.5px] text-ink-soft mb-[6px] font-semibold">
-              이름 <span className="text-cyan">*</span>
+              이름 <span className="text-blue">*</span>
             </label>
             <input name="name" type="text" placeholder="홍길동" className={inputClass} />
             <FieldError msg={state.fieldErrors?.name} />
           </div>
           <div>
             <label className="block text-[12.5px] text-ink-soft mb-[6px] font-semibold">
-              연락처 <span className="text-cyan">*</span>
+              연락처 <span className="text-blue">*</span>
             </label>
             <input name="phone" type="tel" placeholder="010-0000-0000" className={inputClass} />
             <FieldError msg={state.fieldErrors?.phone} />
@@ -105,13 +105,13 @@ export function ConsultForm() {
               name="pickupDate"
               type="date"
               className={inputClass}
-              style={{ colorScheme: "dark" }}
+              style={{ colorScheme: "light" }}
             />
             <input
               name="pickupTime"
               type="time"
               className={inputClass}
-              style={{ colorScheme: "dark" }}
+              style={{ colorScheme: "light" }}
             />
           </div>
         </div>
@@ -124,13 +124,13 @@ export function ConsultForm() {
               name="returnDate"
               type="date"
               className={inputClass}
-              style={{ colorScheme: "dark" }}
+              style={{ colorScheme: "light" }}
             />
             <input
               name="returnTime"
               type="time"
               className={inputClass}
-              style={{ colorScheme: "dark" }}
+              style={{ colorScheme: "light" }}
             />
           </div>
         </div>
@@ -142,7 +142,7 @@ export function ConsultForm() {
             name="message"
             placeholder="희망 계약기간, 예산, 기타 문의사항을 남겨주세요."
             rows={3}
-            className={`${inputClass} resize-y min-h-[80px]`}
+            className={`${inputClass} resize-y`} style={{ minHeight: "90px" }}
           />
         </div>
 

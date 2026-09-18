@@ -45,25 +45,25 @@ const steps = [
 
 export function ProcessSection() {
   return (
-    <section id="steps" className="section-py border-t border-[var(--line)]">
+    <section id="steps" className="section-py section-soft border-t border-[var(--line)]">
       <div className="wrap">
-        <div className="text-center mb-[38px]">
-          <div className="text-[12.5px] font-bold text-cyan tracking-[.14em] uppercase mb-[10px]">How to</div>
-          <h2 className="text-[clamp(24px,3.1vw,34px)] font-black tracking-[-0.02em]">
+        <div className="text-center sec-header">
+          <div className="text-[13px] font-bold text-blue tracking-[.14em] uppercase mb-3">How to</div>
+          <h2 className="sec-h2">
             장기렌트, 이렇게 시작하세요
           </h2>
-          <p className="text-ink-soft text-[15px] mt-[10px]">복잡한 절차 없이 4단계로 간단하게 진행됩니다.</p>
+          <p className="text-ink-soft text-[16px] mt-3">복잡한 절차 없이 4단계로 간단하게 진행됩니다.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[18px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {steps.map(step => (
-            <div key={step.num} className="glass rounded-[18px] p-[26px_22px]">
-              <div className="text-[13px] font-black text-cyan tracking-[.05em]">{step.num}</div>
-              <div className="w-[44px] h-[44px] rounded-[12px] bg-[rgba(61,139,255,.16)] text-blue-bright grid place-items-center mt-[14px] mb-4 shrink-0">
+            <div key={step.num} className="glass rounded-[18px]" style={{ padding: "30px 26px" }}>
+              <div className="text-[13px] font-black text-blue tracking-[.05em]">{step.num}</div>
+              <div className="w-[48px] h-[48px] rounded-[13px] text-blue-bright grid place-items-center mt-4 mb-[18px] shrink-0" style={{ background: "rgba(47,107,230,.1)" }}>
                 {step.icon}
               </div>
-              <h3 className="text-[17px] font-bold">{step.title}</h3>
-              <p className="text-[13.5px] text-ink-dim mt-2 leading-[1.65]">{step.desc}</p>
+              <h3 className="text-[18px] font-bold">{step.title}</h3>
+              <p className="text-[14px] text-ink-dim mt-[10px] leading-[1.7]">{step.desc}</p>
             </div>
           ))}
         </div>

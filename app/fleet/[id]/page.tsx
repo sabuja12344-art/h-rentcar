@@ -41,7 +41,7 @@ export default async function FleetDetailPage({
 
   return (
     <main className="pt-[56px] sm:pt-[80px] pb-[80px] sm:pb-[120px]">
-      <div className="mx-auto max-w-[1200px] px-6 sm:px-8">
+      <div className="wrap">
         {/* 뒤로 */}
         <Link
           href="/fleet"

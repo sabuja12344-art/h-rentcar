@@ -21,19 +21,19 @@ export function FAQSection() {
   return (
     <section className="section-py border-t border-[var(--line)]">
       <div className="wrap">
-        <div className="text-center mb-[38px]">
-          <div className="text-[12.5px] font-bold text-cyan tracking-[.14em] uppercase mb-[10px]">FAQ</div>
-          <h2 className="text-[clamp(24px,3.1vw,34px)] font-black tracking-[-0.02em]">자주 묻는 질문</h2>
+        <div className="text-center sec-header">
+          <div className="text-[13px] font-bold text-blue tracking-[.14em] uppercase mb-3">FAQ</div>
+          <h2 className="sec-h2">자주 묻는 질문</h2>
         </div>
 
-        <div className="max-w-[820px] mx-auto space-y-3">
+        <div className="faq-wrap">
           {faqs.map((faq, i) => (
-            <details key={i} className="qa glass rounded-[12px] overflow-hidden" open={i === 0}>
-              <summary className="flex items-center justify-between gap-4 px-[22px] py-5 cursor-pointer text-[16px] font-semibold">
+            <details key={i} className="qa glass rounded-[12px] overflow-hidden" style={{ marginBottom: "12px" }} open={i === 0}>
+              <summary className="flex items-center justify-between gap-4 cursor-pointer text-[16px] font-semibold" style={{ padding: "20px 22px" }}>
                 {faq.q}
                 <span className="qa-plus text-blue-bright text-[20px] shrink-0 leading-none">+</span>
               </summary>
-              <div className="px-[22px] pb-5 text-[14.5px] text-ink-soft leading-[1.8]">
+              <div className="text-[14.5px] text-ink-soft" style={{ padding: "0 22px 20px", lineHeight: "1.8" }}>
                 {faq.a}
               </div>
             </details>

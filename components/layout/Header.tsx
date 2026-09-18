@@ -18,9 +18,9 @@ export function Header() {
       className="sticky top-0 z-[100] border-b border-[var(--glass-line)]"
       style={{
         height: "var(--header-h)",
-        background: "rgba(8,14,26,.55)",
-        backdropFilter: "blur(var(--glass-blur))",
-        WebkitBackdropFilter: "blur(var(--glass-blur))",
+        background: "rgba(255,255,255,.9)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
       }}
     >
       <div className="wrap h-full flex items-center justify-between">
@@ -33,8 +33,8 @@ export function Header() {
           <span
             className="w-8 h-8 rounded-[9px] grid place-items-center text-white font-black text-[16px]"
             style={{
-              background: "linear-gradient(145deg,#5ea6ff,#3d8bff)",
-              boxShadow: "0 4px 14px rgba(61,139,255,.4)",
+              background: "linear-gradient(145deg,#4f86f0,#2f6be6)",
+              boxShadow: "0 4px 12px rgba(47,107,230,.35)",
             }}
           >
             H
@@ -59,8 +59,8 @@ export function Header() {
             href="/#consult"
             className="px-[18px] py-[9px] rounded-full text-[14px] font-bold text-white transition-all duration-150 hover:brightness-110"
             style={{
-              background: "linear-gradient(135deg,#5ea6ff,#3d8bff)",
-              boxShadow: "0 6px 18px rgba(61,139,255,.35)",
+              background: "linear-gradient(135deg,#4f86f0,#2f6be6)",
+              boxShadow: "0 6px 16px rgba(47,107,230,.3)",
             }}
           >
             견적 상담
@@ -90,8 +90,8 @@ export function Header() {
       <nav
         className={`sm:hidden fixed inset-x-0 top-[var(--header-h)] z-40 flex flex-col border-b border-[var(--line)] px-6 pb-5 pt-2 transition-transform duration-300 ${menuOpen ? "translate-y-0" : "-translate-y-[130%]"}`}
         style={{
-          background: "rgba(8,13,24,.96)",
-          backdropFilter: "blur(14px)",
+          background: "rgba(255,255,255,.98)",
+          backdropFilter: "blur(12px)",
         }}
         aria-hidden={!menuOpen}
       >
@@ -109,7 +109,7 @@ export function Header() {
           href="/#consult"
           onClick={close}
           className="mt-[14px] text-center px-5 py-[14px] rounded-full text-sm font-bold text-white"
-          style={{ background: "linear-gradient(135deg,#5ea6ff,#3d8bff)" }}
+          style={{ background: "linear-gradient(135deg,#4f86f0,#2f6be6)" }}
         >
           견적 상담
         </Link>
