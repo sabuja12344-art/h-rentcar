@@ -8,12 +8,10 @@ export const metadata: Metadata = { title: "배너 추가 | 어드민" };
 export default function AdminNewBannerPage() {
   return (
     <div>
-      <div className="flex items-center gap-3 mb-8">
-        <Link href="/admin/banners" className="text-ink-dim hover:text-ink transition-colors text-[13px]">
-          ← 배너 목록
-        </Link>
-        <span className="text-ink-dim">/</span>
-        <h1 className="text-[20px] font-black">배너 추가</h1>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "28px" }}>
+        <Link href="/admin/banners" style={{ fontSize: "13px", color: "#94a3b8", textDecoration: "none" }}>← 배너 목록</Link>
+        <span style={{ color: "#d1d5db" }}>/</span>
+        <h1 style={{ fontSize: "20px", fontWeight: 800, color: "#0f172a" }}>배너 추가</h1>
       </div>
       <BannerForm action={createBanner} submitLabel="배너 추가" />
     </div>

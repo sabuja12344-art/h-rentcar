@@ -7,6 +7,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "차량 관리 | 어드민" };
 
+const th: React.CSSProperties = { textAlign: "left", fontSize: "11px", color: "#94a3b8", fontWeight: 600, padding: "10px 16px", borderBottom: "1px solid #e5e7eb", whiteSpace: "nowrap" };
+const td: React.CSSProperties = { padding: "12px 16px", fontSize: "13px", color: "#374151", borderBottom: "1px solid #f1f5f9" };
+
 export default async function AdminCarsPage() {
   const cars = await prisma.car.findMany({
     orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
@@ -14,79 +17,73 @@ export default async function AdminCarsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "28px" }}>
         <div>
-          <h1 className="text-[22px] font-black">차량 관리</h1>
-          <p className="text-ink-dim text-[13px] mt-1">총 {cars.length}종</p>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0f172a" }}>차량 관리</h1>
+          <p style={{ fontSize: "13px", color: "#94a3b8", marginTop: "4px" }}>총 {cars.length}종</p>
         </div>
         <Link
           href="/admin/cars/new"
-          className="inline-flex items-center gap-2 px-5 py-[10px] rounded-[10px] text-[13px] font-bold text-[#1a1305] bg-gradient-to-br from-gold-soft to-gold hover:brightness-105 transition-all"
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "10px 20px", borderRadius: "10px", fontSize: "13px", fontWeight: 700, background: "#2563eb", color: "#fff", textDecoration: "none" }}
         >
           + 차량 추가
         </Link>
       </div>
 
-      <div className="bg-panel border border-[var(--line)] rounded-[14px] overflow-hidden">
-        <table className="w-full">
+      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: "12px", overflow: "hidden" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr className="border-b border-[var(--line)]">
+            <tr>
               {["순서", "차량명", "차종", "월렌트료", "라벨", "상태", ""].map((h) => (
-                <th key={h} className="text-left text-[11px] text-ink-dim font-semibold uppercase tracking-wide py-3 px-4">
-                  {h}
-                </th>
+                <th key={h} style={th}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {cars.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-ink-dim text-[13px]">
+                <td colSpan={7} style={{ ...td, textAlign: "center", padding: "48px", color: "#94a3b8" }}>
                   등록된 차량이 없습니다.
                 </td>
               </tr>
             )}
             {cars.map((car) => {
               const toggleAction = toggleCarActive.bind(null, car.id, car.isActive);
-
               return (
-                <tr key={car.id} className="border-b border-[var(--line)] last:border-0 hover:bg-[rgba(255,255,255,0.02)]">
-                  <td className="py-3 px-4 text-[12px] text-ink-dim w-[60px]">{car.sortOrder}</td>
-                  <td className="py-3 px-4">
-                    <div className="text-[13px] font-semibold">{car.name}</div>
-                    {car.nameEn && <div className="text-[11px] text-ink-dim">{car.nameEn}</div>}
+                <tr key={car.id} style={{ background: "#fff" }}>
+                  <td style={{ ...td, color: "#94a3b8", width: "60px" }}>{car.sortOrder}</td>
+                  <td style={td}>
+                    <div style={{ fontWeight: 600 }}>{car.name}</div>
+                    {car.nameEn && <div style={{ fontSize: "11px", color: "#94a3b8" }}>{car.nameEn}</div>}
                   </td>
-                  <td className="py-3 px-4 text-[13px] text-ink-soft">{car.category}</td>
-                  <td className="py-3 px-4 text-[13px] font-semibold text-gold-soft">{car.monthlyPrice}만원~</td>
-                  <td className="py-3 px-4">
+                  <td style={{ ...td, color: "#64748b" }}>{car.category}</td>
+                  <td style={{ ...td, fontWeight: 600, color: "#2563eb" }}>{car.monthlyPrice}만원~</td>
+                  <td style={td}>
                     {car.label ? (
-                      <span className="text-[11px] font-bold px-[9px] py-[3px] rounded-full bg-gold/10 text-gold">
+                      <span style={{ fontSize: "11px", fontWeight: 700, padding: "3px 10px", borderRadius: "20px", background: "#eff6ff", color: "#2563eb" }}>
                         {car.label}
                       </span>
                     ) : (
-                      <span className="text-[11px] text-ink-dim">—</span>
+                      <span style={{ fontSize: "11px", color: "#94a3b8" }}>—</span>
                     )}
                   </td>
-                  <td className="py-3 px-4">
+                  <td style={td}>
                     <form action={toggleAction}>
                       <button
                         type="submit"
-                        className={`text-[11px] font-semibold px-[10px] py-[4px] rounded-full transition-colors ${
-                          car.isActive
-                            ? "bg-green-500/10 text-green-400 hover:bg-green-500/20"
-                            : "bg-[rgba(255,255,255,0.06)] text-ink-dim hover:bg-[rgba(255,255,255,0.1)]"
-                        }`}
+                        style={{
+                          fontSize: "11px", fontWeight: 600, padding: "4px 12px", borderRadius: "20px", border: "none", cursor: "pointer",
+                          background: car.isActive ? "#dcfce7" : "#f1f5f9",
+                          color: car.isActive ? "#16a34a" : "#94a3b8",
+                        }}
                       >
                         {car.isActive ? "활성" : "비활성"}
                       </button>
                     </form>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={`/admin/cars/${car.id}/edit`}
-                        className="text-[12px] text-ink-soft hover:text-gold-soft transition-colors"
-                      >
+                  <td style={td}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <Link href={`/admin/cars/${car.id}/edit`} style={{ fontSize: "12px", color: "#64748b", textDecoration: "none" }}>
                         수정
                       </Link>
                       <DeleteCarButton id={car.id} name={car.name} />

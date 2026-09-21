@@ -7,11 +7,11 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "배너 관리 | 어드민" };
 
+const th: React.CSSProperties = { textAlign: "left", fontSize: "11px", color: "#94a3b8", fontWeight: 600, padding: "10px 16px", borderBottom: "1px solid #e5e7eb", whiteSpace: "nowrap" };
+const td: React.CSSProperties = { padding: "12px 16px", fontSize: "13px", color: "#374151", borderBottom: "1px solid #f1f5f9" };
+
 const CAR_TYPE_LABELS: Record<string, string> = {
-  compact: "경차",
-  sedan: "세단",
-  suv: "SUV",
-  van: "승합·미니밴",
+  compact: "경차", sedan: "세단", suv: "SUV", van: "승합·미니밴",
 };
 
 export default async function AdminBannersPage() {
@@ -19,34 +19,32 @@ export default async function AdminBannersPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "28px" }}>
         <div>
-          <h1 className="text-[22px] font-black">배너 관리</h1>
-          <p className="text-ink-dim text-[13px] mt-1">총 {banners.length}개</p>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0f172a" }}>배너 관리</h1>
+          <p style={{ fontSize: "13px", color: "#94a3b8", marginTop: "4px" }}>총 {banners.length}개</p>
         </div>
         <Link
           href="/admin/banners/new"
-          className="inline-flex items-center gap-2 px-5 py-[10px] rounded-[10px] text-[13px] font-bold text-[#1a1305] bg-gradient-to-br from-gold-soft to-gold hover:brightness-105 transition-all"
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "10px 20px", borderRadius: "10px", fontSize: "13px", fontWeight: 700, background: "#2563eb", color: "#fff", textDecoration: "none" }}
         >
           + 배너 추가
         </Link>
       </div>
 
-      <div className="bg-panel border border-[var(--line)] rounded-[14px] overflow-hidden">
-        <table className="w-full">
+      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: "12px", overflow: "hidden" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr className="border-b border-[var(--line)]">
+            <tr>
               {["순서", "칩 라벨", "가격", "문구", "차종", "상태", ""].map((h) => (
-                <th key={h} className="text-left text-[11px] text-ink-dim font-semibold uppercase tracking-wide py-3 px-4 whitespace-nowrap">
-                  {h}
-                </th>
+                <th key={h} style={th}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {banners.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-ink-dim text-[13px]">
+                <td colSpan={7} style={{ ...td, textAlign: "center", padding: "48px", color: "#94a3b8" }}>
                   등록된 배너가 없습니다.
                 </td>
               </tr>
@@ -54,40 +52,34 @@ export default async function AdminBannersPage() {
             {banners.map((banner) => {
               const toggleAction = toggleBannerActive.bind(null, banner.id, banner.isActive);
               const deleteAction = deleteBanner.bind(null, banner.id);
-
               return (
-                <tr key={banner.id} className="border-b border-[var(--line)] last:border-0 hover:bg-[rgba(255,255,255,0.02)]">
-                  <td className="py-3 px-4 text-[12px] text-ink-dim w-[60px]">{banner.sortOrder}</td>
-                  <td className="py-3 px-4 text-[13px] font-semibold">{banner.chipLabel}</td>
-                  <td className="py-3 px-4 text-[13px] text-gold-soft font-semibold">{banner.chipPrice}</td>
-                  <td className="py-3 px-4 text-[13px] text-ink-soft max-w-[200px] truncate">
-                    {banner.caption || "—"}
+                <tr key={banner.id} style={{ background: "#fff" }}>
+                  <td style={{ ...td, color: "#94a3b8", width: "60px" }}>{banner.sortOrder}</td>
+                  <td style={{ ...td, fontWeight: 600 }}>{banner.chipLabel}</td>
+                  <td style={{ ...td, fontWeight: 600, color: "#2563eb" }}>{banner.chipPrice}</td>
+                  <td style={{ ...td, maxWidth: "200px" }}>
+                    <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: "#64748b" }}>
+                      {banner.caption || "—"}
+                    </div>
                   </td>
-                  <td className="py-3 px-4 text-[13px] text-ink-soft">
-                    {CAR_TYPE_LABELS[banner.carType] ?? banner.carType}
-                  </td>
-                  <td className="py-3 px-4">
+                  <td style={{ ...td, color: "#64748b" }}>{CAR_TYPE_LABELS[banner.carType] ?? banner.carType}</td>
+                  <td style={td}>
                     <form action={toggleAction}>
                       <button
                         type="submit"
-                        className={`text-[11px] font-semibold px-[10px] py-[4px] rounded-full transition-colors ${
-                          banner.isActive
-                            ? "bg-green-500/10 text-green-400 hover:bg-green-500/20"
-                            : "bg-[rgba(255,255,255,0.06)] text-ink-dim hover:bg-[rgba(255,255,255,0.1)]"
-                        }`}
+                        style={{
+                          fontSize: "11px", fontWeight: 600, padding: "4px 12px", borderRadius: "20px", border: "none", cursor: "pointer",
+                          background: banner.isActive ? "#dcfce7" : "#f1f5f9",
+                          color: banner.isActive ? "#16a34a" : "#94a3b8",
+                        }}
                       >
                         {banner.isActive ? "활성" : "비활성"}
                       </button>
                     </form>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href={`/admin/banners/${banner.id}/edit`}
-                        className="text-[12px] text-ink-soft hover:text-gold-soft transition-colors"
-                      >
-                        수정
-                      </Link>
+                  <td style={td}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <Link href={`/admin/banners/${banner.id}/edit`} style={{ fontSize: "12px", color: "#64748b", textDecoration: "none" }}>수정</Link>
                       <DeleteButton action={deleteAction} />
                     </div>
                   </td>

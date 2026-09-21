@@ -7,39 +7,40 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "후기 관리 | 어드민" };
 
+const th: React.CSSProperties = { textAlign: "left", fontSize: "11px", color: "#94a3b8", fontWeight: 600, padding: "10px 16px", borderBottom: "1px solid #e5e7eb", whiteSpace: "nowrap" };
+const td: React.CSSProperties = { padding: "12px 16px", fontSize: "13px", color: "#374151", borderBottom: "1px solid #f1f5f9" };
+
 export default async function AdminReviewsPage() {
   const reviews = await prisma.review.findMany({ orderBy: { sortOrder: "asc" } });
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "28px" }}>
         <div>
-          <h1 className="text-[22px] font-black">후기 관리</h1>
-          <p className="text-ink-dim text-[13px] mt-1">총 {reviews.length}개</p>
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0f172a" }}>후기 관리</h1>
+          <p style={{ fontSize: "13px", color: "#94a3b8", marginTop: "4px" }}>총 {reviews.length}개</p>
         </div>
         <Link
           href="/admin/reviews/new"
-          className="inline-flex items-center gap-2 px-5 py-[10px] rounded-[10px] text-[13px] font-bold text-[#1a1305] bg-gradient-to-br from-gold-soft to-gold hover:brightness-105 transition-all"
+          style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "10px 20px", borderRadius: "10px", fontSize: "13px", fontWeight: 700, background: "#2563eb", color: "#fff", textDecoration: "none" }}
         >
           + 후기 추가
         </Link>
       </div>
 
-      <div className="bg-panel border border-[var(--line)] rounded-[14px] overflow-hidden">
-        <table className="w-full">
+      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: "12px", overflow: "hidden" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
-            <tr className="border-b border-[var(--line)]">
+            <tr>
               {["순서", "이니셜", "이름", "별점", "후기 내용", "상태", ""].map((h) => (
-                <th key={h} className="text-left text-[11px] text-ink-dim font-semibold uppercase tracking-wide py-3 px-4 whitespace-nowrap">
-                  {h}
-                </th>
+                <th key={h} style={th}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {reviews.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-ink-dim text-[13px]">
+                <td colSpan={7} style={{ ...td, textAlign: "center", padding: "48px", color: "#94a3b8" }}>
                   등록된 후기가 없습니다.
                 </td>
               </tr>
@@ -47,48 +48,41 @@ export default async function AdminReviewsPage() {
             {reviews.map((review) => {
               const toggleAction = toggleReviewActive.bind(null, review.id, review.isActive);
               const deleteAction = deleteReview.bind(null, review.id);
-
               return (
-                <tr key={review.id} className="border-b border-[var(--line)] last:border-0 hover:bg-[rgba(255,255,255,0.02)]">
-                  <td className="py-3 px-4 text-[12px] text-ink-dim w-[60px]">{review.sortOrder}</td>
-                  <td className="py-3 px-4">
-                    <div
-                      className="w-[30px] h-[30px] rounded-full grid place-items-center text-white font-black text-[13px]"
-                      style={{ background: "linear-gradient(135deg,#5ea6ff,#3d8bff)" }}
-                    >
+                <tr key={review.id} style={{ background: "#fff" }}>
+                  <td style={{ ...td, color: "#94a3b8", width: "60px" }}>{review.sortOrder}</td>
+                  <td style={td}>
+                    <div style={{ width: "30px", height: "30px", borderRadius: "50%", display: "grid", placeItems: "center", color: "#fff", fontWeight: 800, fontSize: "13px", background: "linear-gradient(135deg,#60a5fa,#2563eb)" }}>
                       {review.initial}
                     </div>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="text-[13px] font-semibold">{review.name}</div>
-                    {review.detail && <div className="text-[11px] text-ink-dim">{review.detail}</div>}
+                  <td style={td}>
+                    <div style={{ fontWeight: 600 }}>{review.name}</div>
+                    {review.detail && <div style={{ fontSize: "11px", color: "#94a3b8" }}>{review.detail}</div>}
                   </td>
-                  <td className="py-3 px-4 text-[13px] text-cyan">{"★".repeat(review.stars)}</td>
-                  <td className="py-3 px-4 text-[12px] text-ink-soft max-w-[240px] truncate" title={review.text}>
-                    {review.text}
+                  <td style={{ ...td, color: "#f59e0b" }}>{"★".repeat(review.stars)}</td>
+                  <td style={{ ...td, maxWidth: "240px" }}>
+                    <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "12px", color: "#64748b" }} title={review.text}>
+                      {review.text}
+                    </div>
                   </td>
-                  <td className="py-3 px-4">
+                  <td style={td}>
                     <form action={toggleAction}>
                       <button
                         type="submit"
-                        className={`text-[11px] font-semibold px-[10px] py-[4px] rounded-full transition-colors ${
-                          review.isActive
-                            ? "bg-green-500/10 text-green-400 hover:bg-green-500/20"
-                            : "bg-[rgba(255,255,255,0.06)] text-ink-dim hover:bg-[rgba(255,255,255,0.1)]"
-                        }`}
+                        style={{
+                          fontSize: "11px", fontWeight: 600, padding: "4px 12px", borderRadius: "20px", border: "none", cursor: "pointer",
+                          background: review.isActive ? "#dcfce7" : "#f1f5f9",
+                          color: review.isActive ? "#16a34a" : "#94a3b8",
+                        }}
                       >
                         {review.isActive ? "활성" : "비활성"}
                       </button>
                     </form>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-center gap-3">
-                      <Link
-                        href={`/admin/reviews/${review.id}/edit`}
-                        className="text-[12px] text-ink-soft hover:text-gold-soft transition-colors"
-                      >
-                        수정
-                      </Link>
+                  <td style={td}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <Link href={`/admin/reviews/${review.id}/edit`} style={{ fontSize: "12px", color: "#64748b", textDecoration: "none" }}>수정</Link>
                       <DeleteButton action={deleteAction} />
                     </div>
                   </td>

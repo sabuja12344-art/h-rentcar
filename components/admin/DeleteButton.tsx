@@ -5,19 +5,19 @@ interface Props {
   label?: string;
 }
 
-export function DeleteButton({ action, label = "삭제" }: Props) {
+export function DeleteButton({ action }: Props) {
   return (
     <form
       action={action}
       onSubmit={(e) => {
-        if (!confirm(`${label === "삭제" ? "정말 삭제할까요?" : label}`)) {
-          e.preventDefault();
-        }
+        if (!confirm("정말 삭제할까요?")) e.preventDefault();
       }}
     >
       <button
         type="submit"
-        className="text-[12px] text-red-400/60 hover:text-red-400 transition-colors"
+        style={{ fontSize: "12px", color: "#94a3b8", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+        onMouseEnter={e => (e.currentTarget.style.color = "#dc2626")}
+        onMouseLeave={e => (e.currentTarget.style.color = "#94a3b8")}
       >
         삭제
       </button>

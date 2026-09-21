@@ -5,58 +5,44 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "상담 목록 | 어드민" };
 
-const STATUS_FLOW: Record<string, { label: string; next: string; nextLabel: string; color: string }> = {
-  NEW: { label: "신규", next: "IN_PROGRESS", nextLabel: "→ 처리중", color: "bg-gold/10 text-gold" },
-  IN_PROGRESS: { label: "처리중", next: "DONE", nextLabel: "→ 완료", color: "bg-blue-500/10 text-blue-400" },
-  DONE: { label: "완료", next: "NEW", nextLabel: "→ 재개", color: "bg-[rgba(255,255,255,0.06)] text-ink-dim" },
+const th: React.CSSProperties = { textAlign: "left", fontSize: "11px", color: "#94a3b8", fontWeight: 600, padding: "10px 16px", borderBottom: "1px solid #e5e7eb", whiteSpace: "nowrap" };
+const td: React.CSSProperties = { padding: "12px 16px", fontSize: "13px", color: "#374151", borderBottom: "1px solid #f1f5f9" };
+
+const STATUS_FLOW: Record<string, { label: string; next: string; nextLabel: string; bg: string; color: string }> = {
+  NEW: { label: "신규", next: "IN_PROGRESS", nextLabel: "→ 처리중", bg: "#eff6ff", color: "#2563eb" },
+  IN_PROGRESS: { label: "처리중", next: "DONE", nextLabel: "→ 완료", bg: "#fefce8", color: "#ca8a04" },
+  DONE: { label: "완료", next: "NEW", nextLabel: "→ 재개", bg: "#f1f5f9", color: "#94a3b8" },
 };
 
-function DateTimeCell({ date, time }: { date?: string | null; time?: string | null }) {
-  if (!date) return <span className="text-ink-dim">—</span>;
-  return (
-    <span>
-      {date}
-      {time && <span className="ml-1 text-ink-dim">{time}</span>}
-    </span>
-  );
-}
-
 export default async function AdminInquiriesPage() {
-  const inquiries = await prisma.inquiry.findMany({
-    orderBy: { createdAt: "desc" },
-  });
-
+  const inquiries = await prisma.inquiry.findMany({ orderBy: { createdAt: "desc" } });
   const newCount = inquiries.filter((i) => i.status === "NEW").length;
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "28px" }}>
         <div>
-          <h1 className="text-[22px] font-black">상담 목록</h1>
-          <p className="text-ink-dim text-[13px] mt-1">
+          <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#0f172a" }}>상담 목록</h1>
+          <p style={{ fontSize: "13px", color: "#94a3b8", marginTop: "4px" }}>
             총 {inquiries.length}건
-            {newCount > 0 && (
-              <span className="ml-2 text-gold font-semibold">신규 {newCount}건</span>
-            )}
+            {newCount > 0 && <span style={{ marginLeft: "8px", color: "#dc2626", fontWeight: 600 }}>신규 {newCount}건</span>}
           </p>
         </div>
       </div>
 
-      <div className="bg-panel border border-[var(--line)] rounded-[14px] overflow-x-auto">
-        <table className="w-full min-w-[960px]">
+      <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: "12px", overflow: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "900px" }}>
           <thead>
-            <tr className="border-b border-[var(--line)]">
-              {["접수일시", "유입", "이름", "연락처", "희망 차종", "배차 일시", "반납 일시", "문의 내용", "상태"].map((h) => (
-                <th key={h} className="text-left text-[11px] text-ink-dim font-semibold uppercase tracking-wide py-3 px-4 whitespace-nowrap">
-                  {h}
-                </th>
+            <tr>
+              {["접수일", "이름", "연락처", "희망 차종", "문의 유형", "문의 내용", "상태"].map((h) => (
+                <th key={h} style={th}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {inquiries.length === 0 && (
               <tr>
-                <td colSpan={9} className="py-12 text-center text-ink-dim text-[13px]">
+                <td colSpan={7} style={{ ...td, textAlign: "center", padding: "48px", color: "#94a3b8" }}>
                   접수된 상담이 없습니다.
                 </td>
               </tr>
@@ -64,46 +50,36 @@ export default async function AdminInquiriesPage() {
             {inquiries.map((inq) => {
               const s = STATUS_FLOW[inq.status] ?? STATUS_FLOW.NEW;
               const nextAction = updateInquiryStatus.bind(null, inq.id, s.next);
-
               return (
-                <tr key={inq.id} className="border-b border-[var(--line)] last:border-0 hover:bg-[rgba(255,255,255,0.02)]">
-                  <td className="py-3 px-4 text-[12px] text-ink-dim whitespace-nowrap">
-                    {inq.createdAt.toLocaleDateString("ko-KR")}
-                    <div className="text-[10px]">
-                      {inq.createdAt.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}
+                <tr key={inq.id} style={{ background: "#fff" }}>
+                  <td style={{ ...td, color: "#94a3b8", whiteSpace: "nowrap" }}>
+                    <div>{inq.createdAt.toLocaleDateString("ko-KR")}</div>
+                    <div style={{ fontSize: "11px" }}>{inq.createdAt.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}</div>
+                  </td>
+                  <td style={{ ...td, fontWeight: 600 }}>{inq.name}</td>
+                  <td style={td}>
+                    <a href={`tel:${inq.phone}`} style={{ color: "#374151", textDecoration: "none" }}>{inq.phone}</a>
+                  </td>
+                  <td style={{ ...td, color: "#64748b" }}>{inq.carInterest || "—"}</td>
+                  <td style={td}>
+                    {inq.type ? (
+                      <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "20px", background: "#f0fdf4", color: "#16a34a" }}>
+                        {inq.type}
+                      </span>
+                    ) : <span style={{ color: "#94a3b8" }}>—</span>}
+                  </td>
+                  <td style={{ ...td, maxWidth: "180px" }}>
+                    <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: "12px", color: "#64748b" }} title={inq.message ?? ""}>
+                      {inq.message || "—"}
                     </div>
                   </td>
-                  <td className="py-3 px-4">
-                    <span className={`text-[11px] font-semibold px-[8px] py-[3px] rounded-full whitespace-nowrap ${inq.type === "사이드폼" ? "bg-blue-500/10 text-blue-400" : "bg-[rgba(255,255,255,.06)] text-ink-dim"}`}>
-                      {inq.type === "사이드폼" ? "빠른견적" : "일반폼"}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-[13px] font-semibold">{inq.name}</td>
-                  <td className="py-3 px-4 text-[13px] text-ink-soft">
-                    <a href={`tel:${inq.phone}`} className="hover:text-gold transition-colors">
-                      {inq.phone}
-                    </a>
-                  </td>
-                  <td className="py-3 px-4 text-[13px] text-ink-soft">{inq.carInterest || "—"}</td>
-                  <td className="py-3 px-4 text-[12px] text-ink-soft whitespace-nowrap">
-                    <DateTimeCell date={inq.pickupDate} time={inq.pickupTime} />
-                  </td>
-                  <td className="py-3 px-4 text-[12px] text-ink-soft whitespace-nowrap">
-                    <DateTimeCell date={inq.returnDate} time={inq.returnTime} />
-                  </td>
-                  <td className="py-3 px-4 text-[12px] text-ink-soft max-w-[180px] truncate" title={inq.message ?? ""}>
-                    {inq.message || "—"}
-                  </td>
-                  <td className="py-3 px-4">
-                    <div className="flex flex-col gap-[5px] items-start">
-                      <span className={`text-[11px] font-semibold px-[10px] py-[3px] rounded-full ${s.color}`}>
+                  <td style={td}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "flex-start" }}>
+                      <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "20px", background: s.bg, color: s.color }}>
                         {s.label}
                       </span>
                       <form action={nextAction}>
-                        <button
-                          type="submit"
-                          className="text-[10px] text-ink-dim hover:text-ink transition-colors underline underline-offset-2"
-                        >
+                        <button type="submit" style={{ fontSize: "10px", color: "#94a3b8", background: "none", border: "none", cursor: "pointer", textDecoration: "underline", padding: 0 }}>
                           {s.nextLabel}
                         </button>
                       </form>
