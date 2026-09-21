@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
 }
 
 model Car {
@@ -28,6 +29,8 @@ model Car {
   sortOrder     Int      @default(0)
   isActive      Boolean  @default(true)
   createdAt     DateTime @default(now())
+
+  @@map("hr_cars")
 }
 
 model Inquiry {
@@ -44,6 +47,8 @@ model Inquiry {
   pickupTime    String?
   returnTime    String?
   createdAt     DateTime @default(now())
+
+  @@map("hr_inquiries")
 }
 
 model Banner {
@@ -56,6 +61,8 @@ model Banner {
   isActive   Boolean  @default(true)
   sortOrder  Int      @default(0)
   createdAt  DateTime @default(now())
+
+  @@map("hr_banners")
 }
 
 model Review {
@@ -68,4 +75,6 @@ model Review {
   isActive  Boolean  @default(true)
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
+
+  @@map("hr_reviews")
 }
