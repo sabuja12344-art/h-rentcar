@@ -7,3 +7,8 @@ export async function updateInquiryStatus(id: string, status: string): Promise<v
   await prisma.inquiry.update({ where: { id }, data: { status } });
   revalidatePath("/admin/inquiries");
 }
+
+export async function deleteInquiry(id: string): Promise<void> {
+  await prisma.inquiry.delete({ where: { id } });
+  revalidatePath("/admin/inquiries");
+}

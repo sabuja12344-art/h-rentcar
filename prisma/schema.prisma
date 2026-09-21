@@ -12,18 +12,22 @@ model Car {
   id            String   @id @default(cuid())
   name          String
   nameEn        String?
+  slug          String?
   category      String
   brand         String?
   thumbnail     String   @default("")
   images        String   @default("[]")
   monthlyPrice  Int
+  dailyPrice    Int?
   deposit       String?
   contractTerms String?
   mileage       String?
   year          String?
   fuel          String?
   seats         Int?
-  options       String?
+  options       String   @default("[]")
+  rentalTypes   String   @default("[]")
+  isFeatured    Boolean  @default(false)
   description   String?
   label         String?
   sortOrder     Int      @default(0)
@@ -42,10 +46,6 @@ model Inquiry {
   message       String?
   status        String   @default("NEW")
   agreedPrivacy Boolean
-  pickupDate    String?
-  returnDate    String?
-  pickupTime    String?
-  returnTime    String?
   createdAt     DateTime @default(now())
 
   @@map("hr_inquiries")
@@ -56,6 +56,7 @@ model Banner {
   chipLabel  String
   chipPrice  String
   caption    String?
+  imageUrl   String?
   carType    String   @default("sedan")
   glow       String   @default("rgba(61,139,255,.28)")
   isActive   Boolean  @default(true)
@@ -77,4 +78,30 @@ model Review {
   createdAt DateTime @default(now())
 
   @@map("hr_reviews")
+}
+
+model Category {
+  id        String @id @default(cuid())
+  slug      String @unique
+  label     String
+  sortOrder Int    @default(0)
+
+  @@map("hr_categories")
+}
+
+model RateCard {
+  id            String   @id @default(cuid())
+  name          String
+  startingPrice Int?
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  @@map("hr_rate_cards")
+}
+
+model SiteSetting {
+  key   String @id
+  value String @default("")
+
+  @@map("hr_settings")
 }
