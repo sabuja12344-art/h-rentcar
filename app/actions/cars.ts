@@ -57,7 +57,8 @@ export async function createCar(_prev: CarFormState, formData: FormData): Promis
   const rentalTypes = parseCheckboxArray(formData, "rental", RENTAL_OPTIONS);
 
   try {
-    await prisma.car.create({ data: { ...result.data, options, rentalTypes } });
+    const { thumbnail, ...rest } = result.data;
+    await prisma.car.create({ data: { ...rest, thumbnail: thumbnail ?? "", options, rentalTypes } });
   } catch {
     return { error: "저장 중 오류가 발생했습니다." };
   }
@@ -75,7 +76,8 @@ export async function updateCar(id: string, _prev: CarFormState, formData: FormD
   const rentalTypes = parseCheckboxArray(formData, "rental", RENTAL_OPTIONS);
 
   try {
-    await prisma.car.update({ where: { id }, data: { ...result.data, options, rentalTypes } });
+    const { thumbnail, ...rest } = result.data;
+    await prisma.car.update({ where: { id }, data: { ...rest, thumbnail: thumbnail ?? undefined, options, rentalTypes } });
   } catch {
     return { error: "수정 중 오류가 발생했습니다." };
   }
