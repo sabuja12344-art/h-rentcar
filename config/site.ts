@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "현대렌트카",
-  tagline: "광주 월 장기렌트",
+  tagline: "현대렌트카 장기렌트 전문",
   phone: "1544-0000",           // 교체 필요
   sms: "1544-0000",             // 교체 필요
   kakaoOpenUrl: "https://open.kakao.com/",        // 교체 필요

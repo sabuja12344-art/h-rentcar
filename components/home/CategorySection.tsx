@@ -53,8 +53,11 @@ export function CategorySection() {
             Why H-RENT CAR
           </div>
           <h2 className="sec-h2">
-            광주에서 장기렌트, 이래서 H-RENT CAR입니다
+            현대렌트카를 선택하는 이유
           </h2>
+          <p className="text-ink-soft text-[16px] mt-3">
+            투명한 가격, 빠른 출고, 광주 전담 상담으로 믿고 맡기실 수 있습니다.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

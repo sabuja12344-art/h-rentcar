@@ -10,15 +10,12 @@ const schema = z.object({
     .string()
     .min(9, "연락처를 입력해주세요")
     .regex(/^[\d\-\s]+$/, "올바른 연락처를 입력해주세요"),
+  inquiryType: z.string().optional(),
   carInterest: z.string().optional(),
   message: z.string().optional(),
   agreedPrivacy: z.enum(["on"], {
     errorMap: () => ({ message: "개인정보 수집 및 이용에 동의해주세요" }),
   }),
-  pickupDate: z.string().optional(),
-  pickupTime: z.string().optional(),
-  returnDate: z.string().optional(),
-  returnTime: z.string().optional(),
 });
 
 export type InquiryState = {
@@ -34,13 +31,10 @@ export async function submitInquiry(
   const raw = {
     name: formData.get("name"),
     phone: formData.get("phone"),
+    inquiryType: formData.get("inquiryType") || undefined,
     carInterest: formData.get("carInterest") || undefined,
     message: formData.get("message") || undefined,
     agreedPrivacy: formData.get("agreedPrivacy"),
-    pickupDate: formData.get("pickupDate") || undefined,
-    pickupTime: formData.get("pickupTime") || undefined,
-    returnDate: formData.get("returnDate") || undefined,
-    returnTime: formData.get("returnTime") || undefined,
   };
 
   const result = schema.safeParse(raw);
@@ -55,25 +49,21 @@ export async function submitInquiry(
     };
   }
 
-  const { name, phone, carInterest, message, pickupDate, pickupTime, returnDate, returnTime } =
-    result.data;
+  const { name, phone, inquiryType, carInterest, message } = result.data;
 
   try {
     await prisma.inquiry.create({
       data: {
         name,
         phone,
+        type: inquiryType || null,
         carInterest: carInterest || null,
         message: message || null,
         agreedPrivacy: true,
-        pickupDate: pickupDate || null,
-        pickupTime: pickupTime || null,
-        returnDate: returnDate || null,
-        returnTime: returnTime || null,
       },
     });
 
-    await sendInquiryEmail({ name, phone, carInterest, message, pickupDate, pickupTime, returnDate, returnTime });
+    await sendInquiryEmail({ name, phone, carInterest, message });
 
     return { success: true };
   } catch (err) {

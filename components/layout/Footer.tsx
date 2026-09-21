@@ -7,7 +7,7 @@ export function Footer() {
         <div className="flex justify-between gap-6 flex-wrap">
           <div className="text-[13px] text-ink-dim leading-[1.95]">
             <strong className="text-ink-soft font-bold">{siteConfig.business.name}</strong>
-            {" · "}광주 월 장기렌트 전용 상담
+            {" · "}현대렌트카 장기렌트 전문
             <br />
             대표전화 {siteConfig.phone}
             {" · "}사업자등록번호 {siteConfig.business.regNo}

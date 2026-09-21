@@ -59,7 +59,7 @@ export default async function FleetPage({
             차량 안내
           </h1>
           <p className="text-ink-soft text-[15px] mt-3 max-w-[44ch] leading-[1.7]" style={{ wordBreak: "keep-all" }}>
-            광주 월 장기렌트 가능한 전 차종입니다. 원하는 차종을 선택 후 상담을 신청하세요.
+            현대렌트카의 전 차종입니다. 원하는 차종을 선택 후 상담을 신청하세요.
           </p>
         </div>
 

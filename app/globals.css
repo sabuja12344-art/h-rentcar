@@ -92,8 +92,8 @@ img {
 }
 @media (min-width: 1024px) {
   .section-py {
-    padding-top: 84px;
-    padding-bottom: 84px;
+    padding-top: 72px;
+    padding-bottom: 72px;
   }
 }
 
@@ -177,6 +177,23 @@ details.qa[open] .qa-plus { transform: rotate(45deg); }
 
 /* 차량안내 필터 버튼 공통 패딩 */
 .filter-btn { padding: 7px 14px; }
+
+/* ── PromoSection hover ── */
+.promo-featured {
+  box-shadow: 0 20px 50px rgba(34,86,212,.25);
+  transition: transform .25s, box-shadow .25s;
+}
+.promo-featured:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 64px rgba(34,86,212,.38);
+}
+.promo-list-item { transition: transform .2s, box-shadow .2s; }
+.promo-list-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+.promo-go-btn:hover { background: var(--color-blue); color: #fff; border-color: transparent; }
+
+/* ── CTA Banner 버튼 ── */
+.cta-banner-btn { transition: transform .15s, box-shadow .15s; }
+.cta-banner-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(0,0,0,.28) !important; }
 
 /* 플로팅 버튼 위치 */
 .float-btns {

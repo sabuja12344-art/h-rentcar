@@ -15,9 +15,9 @@ export function ConsultSection() {
         <div className="text-center sec-header">
           <div className="text-[13px] font-bold text-blue tracking-[.14em] uppercase mb-3">Contact</div>
           <h2 className="sec-h2">
-            광주 월 장기렌트, 지금 바로 상담하세요
+            현대렌트카, 지금 바로 상담하세요
           </h2>
-          <p className="text-ink-soft text-[16px] mt-3 max-w-[44ch] mx-auto leading-[1.7]">
+          <p style={{ fontSize: "16px", color: "var(--color-ink-soft)", marginTop: "12px", maxWidth: "38ch", marginLeft: "auto", marginRight: "auto", lineHeight: 1.7, textAlign: "center", wordBreak: "keep-all" }}>
             차량·기간·예산만 알려주시면 담당자가 맞춤 견적을 바로 안내해 드립니다.
           </p>
         </div>

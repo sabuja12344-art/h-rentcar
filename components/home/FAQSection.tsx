@@ -24,6 +24,7 @@ export function FAQSection() {
         <div className="text-center sec-header">
           <div className="text-[13px] font-bold text-blue tracking-[.14em] uppercase mb-3">FAQ</div>
           <h2 className="sec-h2">자주 묻는 질문</h2>
+          <p className="text-ink-soft text-[16px] mt-3">궁금하신 점은 언제든지 상담으로도 확인하실 수 있습니다.</p>
         </div>
 
         <div className="faq-wrap">

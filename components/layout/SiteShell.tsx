@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { FloatingButtons } from "./FloatingButtons";
+import { SideQuickForm } from "./SideQuickForm";
 import { siteConfig } from "@/config/site";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
@@ -20,6 +21,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       <main className="flex-1">{children}</main>
       <Footer />
       <FloatingButtons />
+      <SideQuickForm />
 
       {/* 모바일 하단 바 */}
       <nav

@@ -42,10 +42,10 @@ export default async function AdminInquiriesPage() {
       </div>
 
       <div className="bg-panel border border-[var(--line)] rounded-[14px] overflow-x-auto">
-        <table className="w-full min-w-[860px]">
+        <table className="w-full min-w-[960px]">
           <thead>
             <tr className="border-b border-[var(--line)]">
-              {["접수일시", "이름", "연락처", "희망 차종", "배차 일시", "반납 일시", "문의 내용", "상태"].map((h) => (
+              {["접수일시", "유입", "이름", "연락처", "희망 차종", "배차 일시", "반납 일시", "문의 내용", "상태"].map((h) => (
                 <th key={h} className="text-left text-[11px] text-ink-dim font-semibold uppercase tracking-wide py-3 px-4 whitespace-nowrap">
                   {h}
                 </th>
@@ -55,7 +55,7 @@ export default async function AdminInquiriesPage() {
           <tbody>
             {inquiries.length === 0 && (
               <tr>
-                <td colSpan={8} className="py-12 text-center text-ink-dim text-[13px]">
+                <td colSpan={9} className="py-12 text-center text-ink-dim text-[13px]">
                   접수된 상담이 없습니다.
                 </td>
               </tr>
@@ -71,6 +71,11 @@ export default async function AdminInquiriesPage() {
                     <div className="text-[10px]">
                       {inq.createdAt.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}
                     </div>
+                  </td>
+                  <td className="py-3 px-4">
+                    <span className={`text-[11px] font-semibold px-[8px] py-[3px] rounded-full whitespace-nowrap ${inq.type === "사이드폼" ? "bg-blue-500/10 text-blue-400" : "bg-[rgba(255,255,255,.06)] text-ink-dim"}`}>
+                      {inq.type === "사이드폼" ? "빠른견적" : "일반폼"}
+                    </span>
                   </td>
                   <td className="py-3 px-4 text-[13px] font-semibold">{inq.name}</td>
                   <td className="py-3 px-4 text-[13px] text-ink-soft">

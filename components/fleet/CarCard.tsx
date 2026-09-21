@@ -129,7 +129,7 @@ export function CarCard({ car }: { car: Car }) {
         }} />
 
         {/* 차량 이미지 */}
-        <div style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "grid", placeItems: "center", padding: "14px 18px" }}>
+        <div className="transition-transform duration-300 group-hover:scale-[1.05]" style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "grid", placeItems: "center", padding: "14px 18px" }}>
           {car.thumbnail ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img src={car.thumbnail} alt={car.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />

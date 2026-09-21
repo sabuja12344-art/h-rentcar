@@ -5,7 +5,10 @@ import { useFormStatus } from "react-dom";
 import { submitInquiry, type InquiryState } from "@/app/actions/submitInquiry";
 
 const inputClass =
-  "w-full px-[14px] py-[13px] rounded-[10px] text-[14px] bg-white border border-[var(--line-strong)] text-ink placeholder:text-ink-dim transition-colors duration-150 focus:outline-none focus:border-blue-bright";
+  "w-full px-[16px] py-[15px] rounded-[11px] text-[15px] bg-white border border-[var(--line-strong)] text-ink placeholder:text-ink-dim transition-colors duration-150 focus:outline-none focus:border-blue-bright";
+
+const selectClass =
+  "w-full px-[16px] py-[15px] rounded-[11px] text-[15px] bg-white border border-[var(--line-strong)] text-ink transition-colors duration-150 focus:outline-none focus:border-blue-bright appearance-none cursor-pointer";
 
 function FieldError({ msg }: { msg?: string }) {
   if (!msg) return null;
@@ -18,7 +21,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full py-[15px] rounded-[11px] border-0 cursor-pointer text-[15px] font-black text-white mt-1 transition-all duration-150 hover:brightness-105 hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
+      className="w-full py-[17px] rounded-[12px] border-0 cursor-pointer text-[16px] font-black text-white mt-1 transition-all duration-150 hover:brightness-105 hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0"
       style={{
         background: "linear-gradient(135deg,#4f86f0,#2f6be6)",
         boxShadow: "0 8px 22px rgba(47,107,230,.3)",
@@ -64,7 +67,7 @@ export function ConsultForm() {
 
   return (
     <div
-      className="rounded-[16px] p-6 border border-[var(--line)]"
+      className="rounded-[16px] p-7 border border-[var(--line)]"
       style={{ background: "#f4f6fa" }}
     >
       {state.error && (
@@ -72,18 +75,18 @@ export function ConsultForm() {
           {state.error}
         </div>
       )}
-      <form action={action} className="space-y-[13px]">
+      <form action={action} className="space-y-[16px]">
         {/* 이름 / 연락처 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-[12.5px] text-ink-soft mb-[6px] font-semibold">
+            <label className="block text-[13.5px] text-ink-soft mb-[7px] font-semibold">
               이름 <span className="text-blue">*</span>
             </label>
             <input name="name" type="text" placeholder="홍길동" className={inputClass} />
             <FieldError msg={state.fieldErrors?.name} />
           </div>
           <div>
-            <label className="block text-[12.5px] text-ink-soft mb-[6px] font-semibold">
+            <label className="block text-[13.5px] text-ink-soft mb-[7px] font-semibold">
               연락처 <span className="text-blue">*</span>
             </label>
             <input name="phone" type="tel" placeholder="010-0000-0000" className={inputClass} />
@@ -91,64 +94,43 @@ export function ConsultForm() {
           </div>
         </div>
 
+        {/* 문의 유형 */}
+        <div style={{ position: "relative" }}>
+          <label className="block text-[13.5px] text-ink-soft mb-[7px] font-semibold">문의 유형</label>
+          <select name="inquiryType" defaultValue="" className={selectClass}>
+            <option value="" disabled>문의 유형을 선택해주세요</option>
+            <option value="개인 장기렌트">개인 장기렌트</option>
+            <option value="법인 렌트">법인 렌트</option>
+            <option value="신차 장기렌트">신차 장기렌트</option>
+            <option value="기타 문의">기타 문의</option>
+          </select>
+          {/* 드롭다운 화살표 */}
+          <div style={{ position: "absolute", right: "16px", top: "50%", transform: "translateY(10%)", pointerEvents: "none", color: "var(--color-ink-dim)" }}>
+            <svg viewBox="0 0 12 7" width="12" fill="currentColor"><path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" /></svg>
+          </div>
+        </div>
+
         {/* 희망 차종 */}
         <div>
-          <label className="block text-[12.5px] text-ink-soft mb-[6px] font-semibold">희망 차종</label>
+          <label className="block text-[13.5px] text-ink-soft mb-[7px] font-semibold">희망 차종</label>
           <input name="carInterest" type="text" placeholder="예: 그랜저, SUV 계열" className={inputClass} />
-        </div>
-
-        {/* 배차 날짜·시간 */}
-        <div>
-          <div className="text-[12.5px] text-ink-soft mb-[6px] font-semibold">배차 일시</div>
-          <div className="grid grid-cols-2 gap-2">
-            <input
-              name="pickupDate"
-              type="date"
-              className={inputClass}
-              style={{ colorScheme: "light" }}
-            />
-            <input
-              name="pickupTime"
-              type="time"
-              className={inputClass}
-              style={{ colorScheme: "light" }}
-            />
-          </div>
-        </div>
-
-        {/* 반납 날짜·시간 */}
-        <div>
-          <div className="text-[12.5px] text-ink-soft mb-[6px] font-semibold">반납 일시</div>
-          <div className="grid grid-cols-2 gap-2">
-            <input
-              name="returnDate"
-              type="date"
-              className={inputClass}
-              style={{ colorScheme: "light" }}
-            />
-            <input
-              name="returnTime"
-              type="time"
-              className={inputClass}
-              style={{ colorScheme: "light" }}
-            />
-          </div>
         </div>
 
         {/* 문의 내용 */}
         <div>
-          <label className="block text-[12.5px] text-ink-soft mb-[6px] font-semibold">문의 내용</label>
+          <label className="block text-[13.5px] text-ink-soft mb-[7px] font-semibold">문의 내용</label>
           <textarea
             name="message"
             placeholder="희망 계약기간, 예산, 기타 문의사항을 남겨주세요."
             rows={3}
-            className={`${inputClass} resize-y`} style={{ minHeight: "90px" }}
+            className={`${inputClass} resize-y`}
+            style={{ minHeight: "104px" }}
           />
         </div>
 
         <SubmitButton />
 
-        <label className="flex gap-[7px] items-start text-[12px] text-ink-dim mt-3 cursor-pointer">
+        <label className="flex gap-[7px] items-start text-[13px] text-ink-dim mt-3 cursor-pointer">
           <input name="agreedPrivacy" type="checkbox" value="on" className="mt-[2px] shrink-0" />
           개인정보 수집 및 이용에 동의합니다.
         </label>
