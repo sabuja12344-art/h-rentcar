@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { TrustBand } from "@/components/home/TrustBand";
 import { FleetSection } from "@/components/home/FleetSection";
