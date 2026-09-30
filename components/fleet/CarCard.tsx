@@ -3,6 +3,9 @@
 import Link from "next/link";
 import type { Car } from "@prisma/client";
 
+/* weeklyPrice 필드는 schema에 추가됐으나 prisma generate 전이라 확장 타입 사용 */
+type CarWithWeekly = Car & { weeklyPrice?: number | null };
+
 function CarIllustration({ category }: { category: string }) {
   if (category === "승합/미니밴") {
     return (
@@ -53,6 +56,9 @@ function CarIllustration({ category }: { category: string }) {
 const CAT_LABEL: Record<string, string> = {
   "경차": "경차",
   "소형/준중형 세단": "세단",
+  "중형차": "중형차",
+  "중형": "중형",
+  "대형": "대형",
   "중형/대형 세단": "세단",
   "SUV": "SUV",
   "승합/미니밴": "승합차",
@@ -60,144 +66,181 @@ const CAT_LABEL: Record<string, string> = {
   "전기·친환경": "전기차",
 };
 
-function displayCat(car: Car) {
+function displayCat(car: CarWithWeekly) {
   return CAT_LABEL[car.category] ?? car.category;
 }
 
 function BadgeEl({ label }: { label: string }) {
   const isHot = label === "인기";
   const isSale = label.includes("할인");
-  if (isHot) {
-    return (
-      <span style={{ fontSize: "11.5px", fontWeight: 700, padding: "5px 10px", borderRadius: "7px", background: "var(--color-blue)", color: "#fff", display: "inline-flex", alignItems: "center" }}>
-        {label}
-      </span>
-    );
-  }
-  if (isSale) {
-    return (
-      <span style={{ fontSize: "11.5px", fontWeight: 700, padding: "5px 10px", borderRadius: "7px", background: "var(--color-red)", color: "#fff", display: "inline-flex", alignItems: "center" }}>
-        {label}
-      </span>
-    );
-  }
+  if (isHot) return <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 8px", borderRadius: "6px", background: "var(--color-blue)", color: "#fff", display: "inline-flex", alignItems: "center" }}>{label}</span>;
+  if (isSale) return <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 8px", borderRadius: "6px", background: "var(--color-red)", color: "#fff", display: "inline-flex", alignItems: "center" }}>{label}</span>;
   return (
-    <span style={{ fontSize: "11.5px", fontWeight: 700, padding: "5px 10px", borderRadius: "7px", background: "rgba(255,255,255,.94)", color: "var(--color-ink)", boxShadow: "0 2px 6px rgba(26,34,51,.12)", display: "inline-flex", alignItems: "center", gap: "5px" }}>
-      <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--color-green)", flexShrink: 0 }} />
+    <span style={{ fontSize: "11px", fontWeight: 700, padding: "4px 8px", borderRadius: "6px", background: "rgba(255,255,255,.94)", color: "var(--color-ink)", boxShadow: "0 2px 6px rgba(26,34,51,.12)", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+      <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "var(--color-green)", flexShrink: 0 }} />
       {label}
     </span>
   );
 }
 
-export function CarCard({ car }: { car: Car }) {
+function ServiceChip({ label }: { label: string }) {
   return (
-    <Link
-      href={`/fleet/${car.id}`}
-      className="group"
-      style={{
-        display: "flex", flexDirection: "column", position: "relative",
-        borderRadius: "16px", overflow: "hidden",
-        background: "#ffffff", border: "1px solid var(--line)",
-        boxShadow: "var(--shadow)",
-        transition: "transform .2s, box-shadow .2s",
-        textDecoration: "none",
-      }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLElement).style.transform = "translateY(-6px)";
-        (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-hover)";
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLElement).style.transform = "";
-        (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow)";
-      }}
+    <span style={{ fontSize: "11px", fontWeight: 600, padding: "3px 8px", borderRadius: "5px", background: "rgba(18,178,106,.10)", color: "var(--color-green)", border: "1px solid rgba(18,178,106,.2)", display: "inline-flex", alignItems: "center", gap: "3px" }}>
+      <svg viewBox="0 0 12 12" width="10" fill="currentColor"><path d="M6 1a5 5 0 100 10A5 5 0 006 1zm2.3 3.7l-2.6 2.6a.5.5 0 01-.7 0l-1-1a.5.5 0 01.7-.7l.65.65 2.25-2.25a.5.5 0 01.7.7z"/></svg>
+      {label}
+    </span>
+  );
+}
+
+/* ── 3단 가격 그리드 (PC용) ── */
+function PriceGrid({ car }: { car: CarWithWeekly }) {
+  const cols = [
+    car.dailyPrice ? { label: "1일 / 24시간", value: `${car.dailyPrice.toLocaleString()}원~` } : null,
+    car.weeklyPrice ? { label: "1주일", value: `${car.weeklyPrice}만원~` } : null,
+    { label: "1개월", value: `${car.monthlyPrice}만원~` },
+  ].filter(Boolean) as { label: string; value: string }[];
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: `repeat(${cols.length}, 1fr)`, gap: "6px", marginBottom: "12px" }}>
+      {cols.map(({ label, value }) => (
+        <div key={label} style={{ background: "var(--color-bg)", borderRadius: "8px", padding: "8px 10px" }}>
+          <div style={{ fontSize: "10px", color: "var(--color-ink-dim)", marginBottom: "3px", fontWeight: 500 }}>{label}</div>
+          <div style={{ fontSize: label === "1개월" ? "15px" : "13px", fontWeight: 800, color: label === "1개월" ? "var(--color-blue)" : "var(--color-ink)" }}>
+            {value}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── 3단 가격 (모바일 인라인용) ── */
+function MobilePriceRow({ car }: { car: CarWithWeekly }) {
+  return (
+    <div style={{ marginTop: "5px", display: "flex", flexWrap: "wrap", gap: "4px 10px" }}>
+      {car.dailyPrice && (
+        <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+          <span style={{ fontSize: "10px", color: "var(--color-ink-dim)" }}>1일/24시간</span>
+          <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--color-ink-soft)", marginLeft: "2px" }}>{car.dailyPrice.toLocaleString()}원~</span>
+        </div>
+      )}
+      {car.weeklyPrice && (
+        <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+          <span style={{ fontSize: "10px", color: "var(--color-ink-dim)" }}>1주일</span>
+          <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--color-ink-soft)", marginLeft: "2px" }}>{car.weeklyPrice}만원~</span>
+        </div>
+      )}
+      <div style={{ display: "flex", alignItems: "baseline", gap: "2px" }}>
+        <span style={{ fontSize: "10px", color: "var(--color-ink-dim)" }}>1개월</span>
+        <span style={{ fontSize: "14px", fontWeight: 900, color: "var(--color-blue)", marginLeft: "2px" }}>{car.monthlyPrice}만원~</span>
+      </div>
+    </div>
+  );
+}
+
+export function CarCard({ car }: { car: Car }) {
+  const c = car as CarWithWeekly;
+
+  return (
+    <div
+      className="group relative car-card"
+      style={{ borderRadius: "16px", overflow: "hidden", background: "#ffffff", border: "1px solid var(--line)", boxShadow: "var(--shadow)", transition: "transform .2s, box-shadow .2s" }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-hover)"; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow)"; }}
     >
-      {/* 이미지 영역 */}
-      <div style={{ position: "relative", height: "190px", flexShrink: 0, background: "linear-gradient(135deg,#f0f4fa,#e4ebf5)", overflow: "hidden" }}>
-        {/* 배지 */}
-        {car.label && (
-          <div style={{ position: "absolute", top: "12px", left: "12px", zIndex: 3, display: "flex", gap: "6px", flexWrap: "wrap" }}>
-            <BadgeEl label={car.label} />
+      {/* ── 모바일: 왼쪽 정보 패널 ── */}
+      <Link
+        href={`/fleet/${c.id}`}
+        className="car-card-mob-info"
+        style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "12px 12px 10px", minWidth: 0, paddingTop: c.label ? "32px" : "12px", textDecoration: "none" }}
+      >
+        {c.label && (
+          <div style={{ position: "absolute", top: "9px", left: "9px", zIndex: 10 }}>
+            <BadgeEl label={c.label} />
           </div>
         )}
-
-        {/* 대각선 블루 스트라이프 */}
-        <div style={{
-          position: "absolute", left: 0, right: 0, bottom: 0, height: "44%",
-          background: "linear-gradient(120deg,#2f6be6 0%,#4f86f0 100%)",
-          clipPath: "polygon(0 42%,100% 0,100% 100%,0 100%)",
-          opacity: 0.14,
-        }} />
-
-        {/* 차량 이미지 */}
-        <div className="transition-transform duration-300 group-hover:scale-[1.05]" style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "grid", placeItems: "center", padding: "14px 18px" }}>
-          {car.thumbnail ? (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img src={car.thumbnail} alt={car.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-          ) : (
-            <CarIllustration category={car.category} />
-          )}
-        </div>
-      </div>
-
-      {/* 카드 본문 */}
-      <div style={{ padding: "18px 20px 20px", flex: 1, display: "flex", flexDirection: "column" }}>
-        {/* 카테고리 태그 */}
-        <span style={{ display: "inline-block", fontSize: "11.5px", fontWeight: 600, color: "var(--color-blue)", background: "rgba(47,107,230,.08)", borderRadius: "6px", padding: "4px 9px", marginBottom: "10px", alignSelf: "flex-start" }}>
-          {displayCat(car)}
+        <span style={{ fontSize: "10px", fontWeight: 600, color: "var(--color-blue)", background: "rgba(47,107,230,.08)", borderRadius: "5px", padding: "2px 6px", marginBottom: "4px", alignSelf: "flex-start" }}>
+          {displayCat(c)}
         </span>
+        <div style={{ fontSize: "17px", fontWeight: 800, color: "var(--color-ink)", lineHeight: 1.2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {c.name}
+        </div>
+        {/* 3단 가격 */}
+        <MobilePriceRow car={c} />
+        {/* 예약하기 */}
+        <div style={{ marginTop: "8px", padding: "5px 10px", borderRadius: "7px", background: "var(--color-blue)", color: "#fff", fontSize: "11px", fontWeight: 700, textAlign: "center", alignSelf: "flex-start" }}>
+          예약하기
+        </div>
+      </Link>
 
-        {/* 차량명 */}
-        <div style={{ fontSize: "19px", fontWeight: 800, color: "var(--color-ink)", lineHeight: 1.3 }}>
-          {car.name}
-          {car.nameEn && (
-            <small style={{ fontSize: "13px", color: "var(--color-ink-dim)", fontWeight: 500, marginLeft: "6px" }}>
-              {car.nameEn}
-            </small>
+      {/* ── 모바일: 오른쪽 이미지 패널 ── */}
+      <Link
+        href={`/fleet/${c.id}`}
+        className="car-card-mob-img"
+        style={{ width: "145px", flexShrink: 0, background: "linear-gradient(135deg,#eef2fa,#e0e9f5)", display: "grid", placeItems: "center", padding: "10px", textDecoration: "none" }}
+      >
+        {c.thumbnail ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={c.thumbnail} alt={c.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+        ) : (
+          <CarIllustration category={c.category} />
+        )}
+      </Link>
+
+      {/* ── PC: 이미지 영역 ── */}
+      <Link
+        href={`/fleet/${c.id}`}
+        className="car-card-pc-img"
+        style={{ position: "relative", height: "190px", flexShrink: 0, background: "linear-gradient(135deg,#f0f4fa,#e4ebf5)", overflow: "hidden", width: "100%", textDecoration: "none" }}
+      >
+        {c.label && <div style={{ position: "absolute", top: "12px", left: "12px", zIndex: 3 }}><BadgeEl label={c.label} /></div>}
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "44%", background: "linear-gradient(120deg,#2f6be6 0%,#4f86f0 100%)", clipPath: "polygon(0 42%,100% 0,100% 100%,0 100%)", opacity: 0.14 }} />
+        <div className="transition-transform duration-300 group-hover:scale-[1.05]" style={{ position: "relative", zIndex: 1, width: "100%", height: "100%", display: "grid", placeItems: "center", padding: "14px 18px" }}>
+          {c.thumbnail ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={c.thumbnail} alt={c.name} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+          ) : (
+            <CarIllustration category={c.category} />
           )}
         </div>
+      </Link>
 
-        {/* 스펙 태그 */}
-        <div style={{ display: "flex", gap: "6px", marginTop: "13px", flexWrap: "wrap" }}>
-          {car.seats && (
-            <span style={{ fontSize: "12px", color: "var(--color-ink-soft)", background: "var(--color-bg)", border: "1px solid var(--line)", borderRadius: "6px", padding: "4px 9px" }}>
-              {car.seats}인승
-            </span>
-          )}
-          {car.fuel && (
-            <span style={{ fontSize: "12px", color: "var(--color-ink-soft)", background: "var(--color-bg)", border: "1px solid var(--line)", borderRadius: "6px", padding: "4px 9px" }}>
-              {car.fuel}
-            </span>
-          )}
-          {car.year && (
-            <span style={{ fontSize: "12px", color: "var(--color-ink-soft)", background: "var(--color-bg)", border: "1px solid var(--line)", borderRadius: "6px", padding: "4px 9px" }}>
-              {car.year}
-            </span>
-          )}
+      {/* ── PC: 카드 본문 ── */}
+      <div className="car-card-pc-body" style={{ padding: "16px 18px 18px", flex: 1, flexDirection: "column" }}>
+        <span style={{ display: "inline-block", fontSize: "11.5px", fontWeight: 600, color: "var(--color-blue)", background: "rgba(47,107,230,.08)", borderRadius: "6px", padding: "4px 9px", marginBottom: "8px" }}>
+          {displayCat(c)}
+        </span>
+        <div style={{ fontSize: "18px", fontWeight: 800, color: "var(--color-ink)", lineHeight: 1.3 }}>
+          {c.name}
+          {c.nameEn && <small style={{ fontSize: "13px", color: "var(--color-ink-dim)", fontWeight: 500, marginLeft: "6px" }}>{c.nameEn}</small>}
         </div>
 
-        {/* 가격 행 */}
-        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: "16px", paddingTop: "16px", borderTop: "1px solid var(--line)" }}>
-          <div>
-            <div style={{ fontSize: "12px", color: "var(--color-ink-dim)", marginBottom: "2px" }}>월 장기렌트</div>
-            <div style={{ fontSize: "22px", fontWeight: 800, color: "var(--color-ink)" }}>
-              약 <span style={{ color: "var(--color-blue)" }}>{car.monthlyPrice}</span>
-              <small style={{ fontSize: "14px", color: "var(--color-ink-soft)", fontWeight: 600 }}>만원~</small>
-            </div>
-          </div>
-          <div
-            className="transition-all duration-150 group-hover:bg-blue group-hover:text-white group-hover:border-transparent"
-            style={{
-              width: "42px", height: "42px", borderRadius: "11px",
-              border: "1px solid var(--line-strong)",
-              display: "grid", placeItems: "center",
-              color: "var(--color-ink-soft)",
-              flexShrink: 0,
-            }}
+        {/* 스펙 칩 */}
+        <div style={{ display: "flex", gap: "5px", marginTop: "10px", flexWrap: "wrap" }}>
+          {c.seats && <span style={{ fontSize: "12px", color: "var(--color-ink-soft)", background: "var(--color-bg)", border: "1px solid var(--line)", borderRadius: "6px", padding: "3px 8px" }}>{c.seats}인승</span>}
+          {c.fuel && <span style={{ fontSize: "12px", color: "var(--color-ink-soft)", background: "var(--color-bg)", border: "1px solid var(--line)", borderRadius: "6px", padding: "3px 8px" }}>{c.fuel}</span>}
+          {c.year && <span style={{ fontSize: "12px", color: "var(--color-ink-soft)", background: "var(--color-bg)", border: "1px solid var(--line)", borderRadius: "6px", padding: "3px 8px" }}>{c.year}</span>}
+        </div>
+
+        {/* 서비스 칩 */}
+        <div style={{ display: "flex", gap: "5px", marginTop: "7px", flexWrap: "wrap" }}>
+          <ServiceChip label="사고대차" />
+          <ServiceChip label="보험대차" />
+        </div>
+
+        {/* 3단 가격 + 예약하기 */}
+        <div style={{ marginTop: "14px", paddingTop: "14px", borderTop: "1px solid var(--line)" }}>
+          <PriceGrid car={c} />
+          <Link
+            href="/#consult"
+            style={{ display: "block", width: "100%", padding: "10px 0", borderRadius: "10px", background: "var(--color-blue)", color: "#fff", fontSize: "14px", fontWeight: 700, textAlign: "center", textDecoration: "none", transition: "background .15s" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "var(--color-blue-dark)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "var(--color-blue)"; }}
           >
-            →
-          </div>
+            예약하기
+          </Link>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

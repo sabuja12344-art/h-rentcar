@@ -132,7 +132,29 @@ export default async function FleetDetailPage({
 
             {/* 가격 박스 */}
             <div style={{ marginTop: "20px", padding: "20px 22px", borderRadius: "16px", background: "rgba(47,107,230,.05)", border: "1px solid rgba(47,107,230,.18)" }}>
-              <div style={{ fontSize: "13px", color: "var(--color-ink-dim)", marginBottom: "6px" }}>월 장기렌트 시작가</div>
+              {/* 1일 · 1주일 (값이 있을 때만) */}
+              {((car as { weeklyPrice?: number | null }).weeklyPrice || car.dailyPrice) && (
+                <div style={{ display: "flex", gap: "12px", marginBottom: "16px", paddingBottom: "16px", borderBottom: "1px solid rgba(47,107,230,.14)" }}>
+                  {car.dailyPrice && (
+                    <div style={{ flex: 1, background: "#fff", borderRadius: "10px", padding: "12px 14px", border: "1px solid rgba(47,107,230,.12)" }}>
+                      <div style={{ fontSize: "11px", color: "var(--color-ink-dim)", fontWeight: 500, marginBottom: "4px" }}>1일</div>
+                      <div style={{ fontSize: "20px", fontWeight: 800, color: "var(--color-ink)" }}>
+                        {car.dailyPrice.toLocaleString()}<small style={{ fontSize: "13px", fontWeight: 600, color: "var(--color-ink-soft)" }}>원~</small>
+                      </div>
+                    </div>
+                  )}
+                  {(car as { weeklyPrice?: number | null }).weeklyPrice && (
+                    <div style={{ flex: 1, background: "#fff", borderRadius: "10px", padding: "12px 14px", border: "1px solid rgba(47,107,230,.12)" }}>
+                      <div style={{ fontSize: "11px", color: "var(--color-ink-dim)", fontWeight: 500, marginBottom: "4px" }}>1주일</div>
+                      <div style={{ fontSize: "20px", fontWeight: 800, color: "var(--color-ink)" }}>
+                        {(car as { weeklyPrice?: number | null }).weeklyPrice}<small style={{ fontSize: "13px", fontWeight: 600, color: "var(--color-ink-soft)" }}>만원~</small>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 월 렌트 (메인) */}
+              <div style={{ fontSize: "13px", color: "var(--color-ink-dim)", marginBottom: "6px" }}>1개월 렌트 시작가</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: "2px", lineHeight: 1 }}>
                 <span style={{ fontSize: "24px", fontWeight: 700, color: "var(--color-ink)" }}>약</span>
                 <span style={{ fontSize: "44px", fontWeight: 800, color: "var(--color-blue)", marginLeft: "5px" }}>{car.monthlyPrice}</span>

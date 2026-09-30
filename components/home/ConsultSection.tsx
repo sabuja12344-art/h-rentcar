@@ -3,7 +3,7 @@ import { ConsultForm } from "./ConsultForm";
 
 const tips = [
   "원하는 차종 및 예산 범위",
-  "계약 기간 (12 / 24 / 36 / 48개월)",
+  "계약 기간 (1일 / 1주일 / 1개월 / 1년)",
   "차량 인수 희망 지역",
 ];
 

@@ -34,7 +34,7 @@ export function HeroSection() {
             {/* 배지 */}
             <div className="inline-flex items-center gap-[10px] text-[13px] font-semibold text-gold-soft border border-[rgba(200,161,90,0.35)] rounded-full px-[18px] py-[9px] mb-8 bg-[rgba(200,161,90,0.07)]">
               <span className="w-[7px] h-[7px] rounded-full bg-gold animate-pulse" />
-              광주 전용 · 월 장기렌트 전문
+              당일배차 · 월장기 · 장기렌트
             </div>
 
             <h1 className="text-[clamp(36px,5vw,62px)] font-black leading-[1.1] tracking-[-0.03em]">
