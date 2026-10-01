@@ -1,4 +1,5 @@
 import { prisma } from "./prisma";
+import { siteConfig } from "@/config/site";
 
 export async function getSetting(key: string, fallback = ""): Promise<string> {
   try {
@@ -21,8 +22,8 @@ export async function getSettings(keys: string[]): Promise<Record<string, string
 }
 
 export const SETTING_DEFAULTS: Record<string, string> = {
-  phone_display: "010-0000-0000",
-  phone_tel: "01000000000",
+  phone_display: "010-2132-7213",
+  phone_tel: "01021327213",
   kakao_url: "https://open.kakao.com/",
   business_name: "현대렌트카",
   business_ceo: "대표자명",
@@ -33,5 +34,5 @@ export const SETTING_DEFAULTS: Record<string, string> = {
   hours_sunday: "10:00~15:00",
   hours_note: "토요일·공휴일 상담 가능",
   logo_url: "",
-  instagram_url: "",
+  instagram_url: siteConfig.instagramUrl,
 };

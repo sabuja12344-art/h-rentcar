@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: "현대렌트카",
   tagline: "현대렌트카 장기렌트 전문",
-  phone: "1544-0000",           // 교체 필요
-  sms: "1544-0000",             // 교체 필요
+  phone: "010-2132-7213",
+  sms: "010-2132-7213",
   kakaoOpenUrl: "https://open.kakao.com/",        // 교체 필요
   instagramUrl: "https://instagram.com/hrentcar", // 교체 필요
   naverUrl: "",
