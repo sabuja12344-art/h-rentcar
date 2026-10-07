@@ -4,7 +4,6 @@ import { SiteShell } from "@/components/layout/SiteShell";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingButtons } from "@/components/layout/FloatingButtons";
 import { FooterSlot } from "@/components/layout/FooterSlot";
-import { NaverScript } from "@/components/NaverScript";
 
 export const metadata: Metadata = {
   title: {
@@ -34,6 +33,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css"
         />
+        {/* Naver WCS 공통 스크립트 */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script type="text/javascript" src="//wcs.naver.net/wcslog.js" />
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `if(!wcs_add)var wcs_add={};wcs_add["wa"]="s_4b5dc677bbb";if(!_nasa)var _nasa={};if(window.wcs){wcs.inflow();wcs_do();}`,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-bg-deep text-ink">
         <SiteShell>{children}</SiteShell>
@@ -41,7 +49,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Footer />
           <FloatingButtons />
         </FooterSlot>
-        <NaverScript />
       </body>
     </html>
   );
