@@ -3,10 +3,9 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Header } from "./Header";
-import { Footer } from "./Footer";
-import { FloatingButtons } from "./FloatingButtons";
 import { SideQuickForm } from "./SideQuickForm";
 import { siteConfig } from "@/config/site";
+import { NaverConvLink } from "@/components/NaverConvLink";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -19,8 +18,6 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
     <>
       <Header />
       <main className="flex-1">{children}</main>
-      <Footer />
-      <FloatingButtons />
       <SideQuickForm />
 
       {/* 모바일 하단 바 */}
@@ -32,7 +29,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           boxShadow: "0 -2px 12px rgba(26,34,51,.08)",
         }}
       >
-        <Link
+        <NaverConvLink
           href={`tel:${siteConfig.phone}`}
           className="flex flex-col items-center gap-1 py-[10px] text-[11px] text-ink-soft"
         >
@@ -40,8 +37,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2z" />
           </svg>
           전화
-        </Link>
-        <Link
+        </NaverConvLink>
+        <NaverConvLink
           href={siteConfig.kakaoOpenUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -51,7 +48,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             <path d="M12 3C6.5 3 2 6.5 2 10.8c0 2.7 1.8 5.1 4.6 6.5l-1 3.6 4-2.6c.8.1 1.6.2 2.4.2 5.5 0 10-3.5 10-7.9S17.5 3 12 3z" />
           </svg>
           카톡
-        </Link>
+        </NaverConvLink>
         <Link
           href="/#fleet"
           className="flex flex-col items-center gap-1 py-[10px] text-[11px] text-ink-soft"

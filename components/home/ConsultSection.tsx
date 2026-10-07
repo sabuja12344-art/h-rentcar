@@ -1,5 +1,6 @@
 import { siteConfig } from "@/config/site";
 import { ConsultForm } from "./ConsultForm";
+import { NaverConvLink } from "@/components/NaverConvLink";
 
 const tips = [
   "원하는 차종 및 예산 범위",
@@ -46,9 +47,9 @@ export function ConsultSection() {
               </p>
 
               <div className="mt-[26px]">
-                <a
+                <NaverConvLink
                   href={`tel:${siteConfig.phone}`}
-                  style={{ fontSize: "30px", fontWeight: 900, display: "inline-flex", alignItems: "center", gap: "12px", color: "var(--color-ink)" }}
+                  style={{ fontSize: "30px", fontWeight: 900, display: "inline-flex", alignItems: "center", gap: "12px", color: "var(--color-ink)", textDecoration: "none" }}
                 >
                   <span
                     style={{ width: "44px", height: "44px", borderRadius: "11px", background: "rgba(47,107,230,.1)", color: "var(--color-blue-bright)", display: "grid", placeItems: "center", flexShrink: 0 }}
@@ -58,7 +59,7 @@ export function ConsultSection() {
                     </svg>
                   </span>
                   {siteConfig.phone}
-                </a>
+                </NaverConvLink>
                 <div className="text-[13px] text-ink-dim mt-3 leading-[1.9]">
                   평일 09:00 – 18:00 · 토요일 09:00 – 13:00<br />
                   일요일·공휴일 온라인 상담 가능

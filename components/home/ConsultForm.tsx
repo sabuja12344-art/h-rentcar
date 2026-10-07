@@ -1,8 +1,20 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { submitInquiry, type InquiryState } from "@/app/actions/submitInquiry";
+
+function naverConvert() {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const w = window as any;
+    if (w.wcs) {
+      if (!w.wcs_add) w.wcs_add = {};
+      w.wcs_add["wa"] = "s_4b5dc677bbb";
+      w.wcs.trans({ type: "lead" });
+    }
+  } catch {}
+}
 
 const inputClass =
   "w-full px-[16px] py-[15px] rounded-[11px] text-[15px] bg-white border border-[var(--line-strong)] text-ink placeholder:text-ink-dim transition-colors duration-150 focus:outline-none focus:border-blue-bright";
@@ -36,6 +48,10 @@ const initial: InquiryState = {};
 
 export function ConsultForm() {
   const [state, action] = useActionState(submitInquiry, initial);
+
+  useEffect(() => {
+    if (state.success) naverConvert();
+  }, [state.success]);
 
   if (state.success) {
     return (

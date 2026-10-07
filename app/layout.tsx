@@ -4,6 +4,7 @@ import { SiteShell } from "@/components/layout/SiteShell";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingButtons } from "@/components/layout/FloatingButtons";
 import { FooterSlot } from "@/components/layout/FooterSlot";
+import { NaverScript } from "@/components/NaverScript";
 
 export const metadata: Metadata = {
   title: {
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Footer />
           <FloatingButtons />
         </FooterSlot>
+        <NaverScript />
       </body>
     </html>
   );
